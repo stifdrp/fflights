@@ -36,17 +36,12 @@ return [
     'login_url' => config('app.url') . '/login',
     'menu' => [
         [
-            'text' => '<i class="fas fa-home"></i> Item 1',
-            'url' => config('app.url') . '/item1',
+            'text' => '<i class="fas fa-home"></i> Users1',
+            'url' => config('app.url') . '/admin/users',
         ],
         [
-            'text' => 'Item 2',
-            'url' => config('app.url') . '/item2',
-            'can' => '',
-        ],
-        [
-            'text' => 'Item 3',
-            'url' => config('app.url') . '/item3',
+            'text' => 'Users',
+            'url' => config('app.url') . '/admin/users',
             'can' => 'admin',
         ],
         [

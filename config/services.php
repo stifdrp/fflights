@@ -35,7 +35,7 @@ return [
         'client_secret' => env('SENHAUNICA_SECRET'),
         'callback_id' => env('SENHAUNICA_CALLBACK_ID'),
         'dev' => env('SENHAUNICA_DEV','no'),
-        'redirect' => '/',
+        'redirect' => '/home',
     ],
 
 ];

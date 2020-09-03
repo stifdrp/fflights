@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Profile;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -26,7 +27,10 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('admin', function ($user) {
-            return $user->isAdmin;
+            if ($user->profiles->where('description', 'Admin')->count() > 0)
+                return true;
+
+            return false;
         });
 
         Gate::define('financier', function ($user) {

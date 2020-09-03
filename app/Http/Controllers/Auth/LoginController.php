@@ -12,11 +12,11 @@ use Laravel\Socialite\Facades\Socialite;
 class LoginController extends Controller
 {
     use AuthenticatesUsers;
-    protected $redirectTo = '/';
+    protected $redirectTo = '/home';
 
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('guest')->except('logout');
     }
 
     public function redirectToProvider()
@@ -27,7 +27,6 @@ class LoginController extends Controller
     public function handleProviderCallback()
     {
         $userSenhaUnica = Socialite::driver('senhaunica')->user();
-        // dd($userSenhaUnica);
         $user = User::where('id',$userSenhaUnica->codpes)->first();
 
         if (is_null($user)) $user = new User;
@@ -38,13 +37,13 @@ class LoginController extends Controller
         $user->name = $userSenhaUnica->nompes;
         $user->save();
         Auth::login($user, true);
-        return redirect('/');
+        return redirect()->route('home');
     }
 
     public function logout()
     {
         Auth::logout();
-        return redirect('/');
+        return redirect()->route('home');
 
     }
 }

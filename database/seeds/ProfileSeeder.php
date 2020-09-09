@@ -15,5 +15,8 @@ class ProfileSeeder extends Seeder
         DB::table('profiles')->insert([
             'description' => 'Admin',
         ]);
+        DB::table('profiles')->insert([
+            'description' => 'Financer',
+        ]);
     }
 }

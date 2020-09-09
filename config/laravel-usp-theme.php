@@ -2,55 +2,26 @@
 
 $submenu1 = [
     [
-        'text' => '<i class="fas fa-atom"></i>  SubItem 1',
-        'url' => config('app.url') . '/subitem1',
-    ],
-    [
-        'text' => 'SubItem 2',
-        'url' => config('app.url') . '/subitem2',
-        'can' => 'admin',
-    ],
-    [
-        'text' => 'SubItem 3',
-        'url' => config('app.url') . '/subitem3',
-    ],
-];
-
-$submenu2 = [
-    [
-        'text' => 'SubItem 1',
-        'url' => config('app.url') . '/subitem1',
-    ],
-    [
-        'text' => 'SubItem 2',
-        'url' => config('app.url') . '/subitem2',
-        'can' => 'admin',
+        'text' => '<i class="fas fa-atom"></i>  Usuários',
+        'url' => config('app.url') . '/admin/users',
     ],
 ];
 
 return [
     'title' => config('app.name'),
-    'dashboard_url' => config('app.url'),
+    'dashboard_url' => config('app.url') . '/home',
     'logout_method' => 'POST',
     'logout_url' => config('app.url') . '/logout',
     'login_url' => config('app.url') . '/login',
     'menu' => [
         [
-            'text' => '<i class="fas fa-home"></i> Users1',
-            'url' => config('app.url') . '/admin/users',
+            'text' => '<i class="fas fa-home"></i> Home',
+            'url' => config('app.url') . '/home',
+            'can' => 'authenticated',
         ],
         [
-            'text' => 'Users',
-            'url' => config('app.url') . '/admin/users',
-            'can' => 'admin',
-        ],
-        [
-            'text' => 'SubMenu1',
+            'text' => 'Configurações',
             'submenu' => $submenu1,
-        ],
-        [
-            'text' => 'SubMenu2',
-            'submenu' => $submenu2,
             'can' => 'admin',
         ],
     ],
@@ -60,6 +31,7 @@ return [
             'title' => 'Configurações',
             'target' => '_blank',
             'url' => config('app.url') . '/item1',
+            'can' => 'authenticated',
         ],
     ],
 ];

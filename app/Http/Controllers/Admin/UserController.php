@@ -24,7 +24,7 @@ class UserController extends Controller
             'remember_token',
             'created_at',
             'updated_at'
-        ])->with('profiles')->get();
+        ])->orderBy('name')->with('profiles')->paginate(5);;
 
         return view('admin.users', [
             'users' => $userList,

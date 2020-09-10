@@ -29,7 +29,7 @@ class UserController extends Controller
                                 'remember_token',
                                 'created_at',
                                 'updated_at'
-                            ])->orderBy('name')->with('profiles')->paginate(5);
+                            ])->orderBy('name')->with('profiles')->paginate(8);
             if(count($userList) <= 0)
                 return route('users');
         } else {
@@ -40,7 +40,7 @@ class UserController extends Controller
                 'remember_token',
                 'created_at',
                 'updated_at'
-            ])->orderBy('name')->with('profiles')->paginate(9);
+            ])->orderBy('name')->with('profiles')->paginate(8);
         }
         return view('admin.users', [
             'users' => $userList,

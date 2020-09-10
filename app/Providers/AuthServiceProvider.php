@@ -33,11 +33,11 @@ class AuthServiceProvider extends ServiceProvider
             return false;
         });
 
-        Gate::define('financier', function ($user) {
+        Gate::define('financer', function ($user) {
             if ($user->profiles->where('description', 'Financer')->count() > 0)
-            return true;
+                return true;
 
-        return false;
+            return false;
         });
 
         Gate::define('authenticated', function ($user) {

@@ -1,10 +1,21 @@
 <?php
 
-$submenu1 = [
+$adminMenu = [
     [
         'text' => '<i class="fas fa-atom"></i>  Usuários',
         'url' => config('app.url') . '/admin/users',
     ],
+];
+$financerMenu = [
+    [
+        'text' => 'Listar verbas',
+        'url' => config('app.url') . '/financer/budgets',
+    ],
+    [
+        'text' => 'Criar verba',
+        'url' => config('app.url') . '/financer/budget/create',
+    ],
+
 ];
 
 return [
@@ -21,8 +32,13 @@ return [
         ],
         [
             'text' => 'Configurações',
-            'submenu' => $submenu1,
+            'submenu' => $adminMenu,
             'can' => 'admin',
+        ],
+        [
+            'text' => 'Financeiro',
+            'submenu' => $financerMenu,
+            'can' => 'financer',
         ],
     ],
     'right_menu' => [

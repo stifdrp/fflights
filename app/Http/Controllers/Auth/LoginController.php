@@ -26,6 +26,13 @@ class LoginController extends Controller
 
     public function handleProviderCallback()
     {
+        //Login temporario de usuario teste
+        // $user = User::find('33189228');
+        // Auth::login($user, true);
+        // return redirect()->route('home');
+
+
+
         $userSenhaUnica = Socialite::driver('senhaunica')->user();
         $user = User::where('id',$userSenhaUnica->codpes)->first();
 

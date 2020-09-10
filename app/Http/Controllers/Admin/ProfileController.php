@@ -16,11 +16,10 @@ class ProfileController extends Controller
     }
 
 
-    public function toggleProfile($id, $profile, Request $request)
+    public function toggleProfile($id, $profile)
     {
         $user = User::find($id);
         $profile = Profile::where('description', $profile)->first();
-        // dd($request->url());
         if($user && $profile){
             $user->profiles()->toggle($profile->id);
             // return redirect()->route('users')->withPath()->with('status', 'Success');

@@ -21,7 +21,8 @@
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form role="form" action="{{ route('budget.store') }}" method="POST">
+        <form role="form" action="{{ route('budget.update', ['id' => $budget->id ] ) }}" method="POST">
+            @method('PUT')
             @csrf
             @include('financer.budgets.form')
         </form>

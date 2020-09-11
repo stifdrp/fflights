@@ -14,6 +14,8 @@ Route::prefix('financer')->group( function() {
     Route::get('budgets', 'Financer\BudgetController@index')->name('budgets');
     Route::get('budget/create', 'Financer\BudgetController@create')->name('budget.create');
     Route::post('budget/store', 'Financer\BudgetController@store')->name('budget.store');
+    Route::get('budget/{id}/edit', 'Financer\BudgetController@edit')->name('budget.edit');
+    Route::put('budget/{id}/edit', 'Financer\BudgetController@update')->name('budget.update');
 });
 
 #Rotas para a senha Única

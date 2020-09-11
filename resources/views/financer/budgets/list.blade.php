@@ -31,7 +31,7 @@
                         {{$budget->id}}
                     </td>
                     <td>
-                        {{$budget->title}}
+                        <a href="{{ route('budget.edit', ['id' => $budget->id]) }}">{{$budget->title}}</a>
                     </td>
                     </tr>
                 @endforeach

@@ -15,6 +15,10 @@ $financerMenu = [
         'text' => 'Criar verba',
         'url' => config('app.url') . '/financer/budget/create',
     ],
+    [
+        'text' => 'Listar solicitações',
+        'url' => config('app.url') . '/solicitations',
+    ],
 
 ];
 
@@ -26,14 +30,9 @@ return [
     'login_url' => config('app.url') . '/login',
     'menu' => [
         [
-            'text' => '<i class="fas fa-home"></i> Home',
-            'url' => config('app.url') . '/home',
+            'text' => '<i class="fas fa-home"></i> Solicitar Passagens',
+            'url' => config('app.url') . '/solicitation/create',
             'can' => 'authenticated',
-        ],
-        [
-            'text' => 'Configurações',
-            'submenu' => $adminMenu,
-            'can' => 'admin',
         ],
         [
             'text' => 'Financeiro',
@@ -45,9 +44,8 @@ return [
         [
             'text' => '<i class="fas fa-cog"></i>',
             'title' => 'Configurações',
-            'target' => '_blank',
-            'url' => config('app.url') . '/item1',
-            'can' => 'authenticated',
+            'url' => config('app.url') . '/admin/users',
+            'can' => 'admin',
         ],
     ],
 ];

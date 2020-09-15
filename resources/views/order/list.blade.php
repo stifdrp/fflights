@@ -5,7 +5,7 @@
 @section('content')
 <div class="box">
     <div class="box-header d-flex justify-content-between" >
-        <h3 class="box-title">Verbas</h3>
+        <h3 class="box-title">Solicitações</h3>
         <div class="box-tools">
             <div class="input-group input-group-sm hidden-xs" style="width: 200px;">
                 <form action="" class="d-flex">
@@ -23,18 +23,36 @@
             <tbody>
                 <tr>
                     <th>Descrição</th>
+                    <th>Solicitante</th>
+                    <th>Verba</th>
+                    <th>Estatus</th>
+                    <th>Data da solicitação</td>
                 </tr>
 
-                @foreach ($budgets as $budget)
+                @foreach ($orders as $order)
+
                 <tr>
                     <td>
-                        <a href="{{ route('budget.edit', ['id' => $budget->id]) }}">{{$budget->title}}</a>
+                        {{-- <a href="{{ route('order.edit', ['id' => $order->id]) }}">{{$order->description}}</a> --}}
+                        {{$order->description}}
                     </td>
-                    </tr>
+                    <td>
+                        {{$order->user->id}} - {{$order->user->name}}
+                    </td>
+                    <td>
+                        {{$order->budget->title}}
+                    </td>
+                    <td>
+                        {{$order->status}}
+                    </td>
+                    <td>
+                        {{ date('d/m/Y', strtotime($order->created_at)) }}
+                    </td>
+                </tr>
                 @endforeach
             </tbody>
         </table>
-        {{ $budgets->links() }}
+        {{ $orders->links() }}
 
     </div>
 </div>

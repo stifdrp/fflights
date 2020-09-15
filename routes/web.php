@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/solicitation/create', 'OrderController@create')->name('order');
+Route::post('/solicitation/store', 'OrderController@store')->name('order.store');
+
+Route::get('/solicitations', 'OrderController@index');
 
 #Rotas para administradores
 Route::get('/admin/users', 'Admin\UserController@index')->name('users');

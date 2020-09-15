@@ -44,4 +44,8 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Profile');
     }
 
+    public function orders()
+    {
+        return $this->hasMany('App\Order');
+    }
 }

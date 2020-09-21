@@ -29,4 +29,9 @@ class Order extends Model
     {
         return $this->belongsTo('App\Budget');
     }
+
+    public function tickets()
+    {
+        return $this->hasMany('App\Ticket');
+    }
 }

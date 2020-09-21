@@ -17,15 +17,10 @@
 <div class="box justify-content-center container-sm">
     <div class="box box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title">Editar Verba</h3>
+            <h3 class="box-title">Solicitar Passagens</h3>
         </div>
-        <!-- /.box-header -->
-        <!-- form start -->
-        <form role="form" action="{{ route('budget.update', ['id' => $budget->id ] ) }}" method="POST">
-            @method('PUT')
-            @csrf
-            @include('financer.budgets.form')
-        </form>
+        @include('')
+
     </div>
 </div>
 

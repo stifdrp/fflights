@@ -33,8 +33,7 @@
 
                 <tr>
                     <td>
-                        {{-- <a href="{{ route('order.edit', ['id' => $order->id]) }}">{{$order->description}}</a> --}}
-                        {{$order->description}}
+                        <a href="{{ route('order.show', ['order' => $order]) }}">{{$order->description}}</a>
                     </td>
                     <td>
                         {{$order->user->id}} - {{$order->user->name}}

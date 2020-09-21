@@ -17,14 +17,14 @@
 <div class="box justify-content-center container-sm">
     <div class="box box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title">Editar Verba</h3>
+            <h3 class="box-title">Editar Solicitação</h3>
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form role="form" action="{{ route('budget.update', ['id' => $budget->id ] ) }}" method="POST">
+        <form role="form" action="{{ route('order.update', ['id' => $order->id ] ) }}" method="POST">
             @method('PUT')
             @csrf
-            @include('financer.budgets.form')
+            @include('order.form')
         </form>
     </div>
 </div>
@@ -32,4 +32,3 @@
 </div>
 
 @endsection
-

@@ -7,5 +7,11 @@
 <!-- /.box-body -->
 
 <div class="box-footer">
-    <button type="submit" class="btn btn-primary">Criar</button>
+    <button type="submit" class="btn btn-primary">
+        @empty($budget)
+            Criar
+        @else
+            Atualizar
+        @endempty
+    </button>
 </div>

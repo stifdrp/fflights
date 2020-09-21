@@ -70,7 +70,11 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        $order->budget;
+        $order->tickets;
+        return view('order.show', [
+            'order' => $order
+        ]);
     }
 
     /**
@@ -81,7 +85,11 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        //
+        $budgets = Budget::all();
+        return view('order.edit', [
+            'budgets' => $budgets,
+            'order' => $order
+        ]);
     }
 
     /**

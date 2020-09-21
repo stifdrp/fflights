@@ -7,10 +7,20 @@
 
     <div class="form-group no-gutters">
         <label>Verba</label>
+
         <select class="form-control col-sm-4 @error('description') is-invalid @enderror" name="budget">
-            <option value='' disabled selected hidden>Selecione uma opção</option>
+            <option value='' disabled
+                @empty($order)
+                    selected
+                @endempty
+
+               hidden>Selecione uma opção</option>
           @foreach ($budgets as $budget)
-            <option value="{{$budget->id}}">{{$budget->title}}</option>
+            <option value="{{$budget->id}}"
+                @isset($order)
+                    {{$order->budget_id == $budget->id ? 'selected="selected"' : ''}}
+                @endisset
+            >{{$budget->title}}</option>
           @endforeach
         </select>
       </div>
@@ -18,5 +28,11 @@
 <!-- /.box-body -->
 
 <div class="box-footer">
-    <button type="submit" class="btn btn-primary">Solicitar</button>
+    <button type="submit" class="btn btn-primary">
+        @empty($budget)
+            Solicitar
+        @else
+            Atualizar
+        @endempty
+    </button>
 </div>

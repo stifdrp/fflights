@@ -25,8 +25,8 @@ class CreateTicketsTable extends Migration
             $table->string('outcomingToAirportCode', 3);
             $table->dateTime('returnDate');
             $table->boolean('international');
+            $table->string('passport', 250)->nullable();
             $table->decimal('price',8,2,)->default(0);
-            $table->string('passport')->nullable();
             $table->decimal('boardingTax',6,2,)->default(0);
             $table->decimal('agencyTax',6,2,)->default(0);
             $table->timestamps();

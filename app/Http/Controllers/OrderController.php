@@ -59,7 +59,7 @@ class OrderController extends Controller
         $order->description = $request->input('description');
         $order->budget_id = $request->input('budget');
         $order->save();
-        return redirect()->route('home');
+        return redirect()->route('ticket.create', [ 'order' => $order]);
     }
 
     /**
@@ -114,4 +114,17 @@ class OrderController extends Controller
     {
         //
     }
+
+    public function mySolicitations()
+    {
+        $orders = Order::where('user_id', Auth::id())
+                    ->with('user')
+                    ->with('budget')
+                    ->orderBy('status')
+                    ->paginate(8);
+        return view('order.list', [
+            'orders' => $orders
+        ]);
+    }
+
 }

@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use App\Ticket;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class TicketController extends Controller
 {
@@ -30,10 +33,7 @@ class TicketController extends Controller
      */
     public function create(Order $order)
     {
-       $order->budget;
-       $order->tickets;
-    //    $order2 = $order::with(['budget', 'tickets'])->find($order);
-        // dd($order);
+        $this->authorize('create', $order);
         return view('order.ticket.create', [
             'order' => $order
         ]);
@@ -45,9 +45,34 @@ class TicketController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Order $order, Request $request)
     {
-        //
+
+        $this->authorize('create', $order);
+        $this->validateTicket();
+        $ticket = new Ticket();
+        $ticket->uspNumber = $request->input('uspNumber');
+        $ticket->passangerFullName = $request->input('passangerFullName');
+        $ticket->incomingFromAirportCode = strtoupper($request->input('incomingFromAirportCode'));
+        $ticket->incomingToAirportCode = strtoupper($request->input('incomingToAirportCode'));
+        $ticket->departDate = $request->input('departDate');
+        $ticket->outcomingFromAirportCode = strtoupper($request->input('outcomingFromAirportCode'));
+        $ticket->outcomingToAirportCode = strtoupper($request->input('outcomingToAirportCode'));
+        $ticket->returnDate = $request->input('returnDate');
+        $ticket->international = $request->input('international') ? True : False;
+        if($request->input('international')) {
+            if($request->file('passport')){
+               $fileName = time().'_'.$request->file('passport')->getClientOriginalName();
+               $ticket->passport = $request->file('passport')->storeAs('passports', $fileName);
+            }else {
+                return redirect()->back()->withInput()->withErrors('Não foi possível encontrar o arquivo');
+            }
+        }
+        $ticket->order()->associate($order);
+        $ticket->save();
+        return redirect()
+                ->route('order.show', [ 'order' => $order]);
+
     }
 
     /**
@@ -69,7 +94,11 @@ class TicketController extends Controller
      */
     public function edit(Ticket $ticket)
     {
-        //
+        $this->authorize('userOrFinancer', $ticket);
+        $ticket->order;
+        return view('order.ticket.edit', [
+            'ticket' => $ticket
+        ]);
     }
 
     /**
@@ -81,7 +110,7 @@ class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket)
     {
-        //
+        $this->authorize('update', $ticket);
     }
 
     /**
@@ -94,4 +123,44 @@ class TicketController extends Controller
     {
         //
     }
+
+    public function passportDownload(Ticket $ticket)
+    {
+        $this->authorize('userOrFinancer', $ticket);
+        return Storage::download($ticket->passport);
+    }
+
+    protected function validateTicket()
+    {
+        return request()->validate([
+            'uspNumber'                 => 'nullable|integer',
+            'passangerFullName'         => 'required|string|max:150',
+            'incomingFromAirportCode'   => 'required|string|size:3',
+            'incomingToAirportCode'     => 'required|string|size:3',
+            'departDate'                => 'required|date',
+            'outcomingFromAirportCode'  => 'required|string|size:3',
+            'outcomingToAirportCode'    => 'required|string|size:3',
+            'returnDate'                => 'required|date',
+            'international'             => 'nullable|string',
+            'passport'                  => 'required_if:international,==,True|file|mimes:jpeg,jpg,png,pdf|max:2048',
+        ],
+        [
+            'uspNumber.integer'                 => 'Tem que ser número',
+            'passangerFullName.required'        => 'O nome do passageiro é obrigatório',
+            'incomingFromAirportCode.required'  => 'O código de Aeroporto é obrigatório',
+            'incomingToAirportCode.required'    => 'O código de Aeroporto é obrigatório',
+            'outcomingFromAirportCode.required' => 'O código de Aeroporto é obrigatório',
+            'outcomingToAirportCode.required'   => 'O código de Aeroporto é obrigatório',
+            'incomingFromAirportCode.size'      => 'O código de Aeroporto tem que ter 3 digitos',
+            'incomingToAirportCode.size'        => 'O código de Aeroporto tem que ter 3 digitos',
+            'outcomingFromAirportCode.size'     => 'O código de Aeroporto tem que ter 3 digitos',
+            'outcomingToAirportCode.size'       => 'O código de Aeroporto tem que ter 3 digitos',
+            'departDate.required'               => 'A data de embarque é obrigatória',
+            'returnDate.required'               => 'A data de embarque é obrigatória',
+            'passport.required_if'              => 'Arquivo do passaporte é obrigatório (extensões permitidas pdf, jpg e png',
+            'passport.mimes'                    => 'Arquivo inválido, extensões permitidas: pdf, jpg, png',
+            ]
+        );
+    }
+
 }

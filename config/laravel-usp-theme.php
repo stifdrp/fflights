@@ -35,6 +35,11 @@ return [
             'can' => 'authenticated',
         ],
         [
+            'text' => '<i class="fas fa-home"></i> Minhas Solicitações',
+            'url' => config('app.url') . '/solicitations/my',
+            'can' => 'authenticated',
+        ],
+        [
             'text' => 'Financeiro',
             'submenu' => $financerMenu,
             'can' => 'financer',

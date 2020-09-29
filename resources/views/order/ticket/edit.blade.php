@@ -17,9 +17,10 @@
 <div class="box justify-content-center container-sm">
     <div class="box box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title">{{$order->description}}</h3>
+            <h3 class="box-title">{{$ticket->order->description}}</h3>
         </div>
-        <form action="{{ route('ticket.store', ['order' => $order]) }}" enctype="multipart/form-data" method="post">
+        <form action="{{ route('ticket.update', ['ticket' => $ticket]) }}" enctype="multipart/form-data" method="post">
+            @method('PUT')
             @csrf
             @include('order.ticket.form')
         </form>

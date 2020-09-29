@@ -53,14 +53,14 @@
             Passagens:
             <ul>
             @foreach ($order->tickets as $ticket )
-                <li><a href=""> {{$ticket->passangerFullName}}</a></li>
+                <li><a href="{{ route('ticket.edit', ['ticket' => $ticket ]) }}"> {{$ticket->passangerFullName}}</a></li>
             @endforeach
             </ul>
         @endif
 
         <hr/>
         <div class="box-footer">
-            <a href="{{ route('order.tickets', ['order' => $order ]) }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Adicionar passagem</a>
+            <a href="{{ route('ticket.create', ['order' => $order ]) }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Adicionar passagem</a>
         </div>
 
     </div>

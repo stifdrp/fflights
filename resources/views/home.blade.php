@@ -3,7 +3,7 @@
 @section('title') FFLights @endsection
 
 @section('content')
-    Seu código
+
 @endsection
 
 @section('footer')

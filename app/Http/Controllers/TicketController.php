@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use App\Ticket;
-use DateTime;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class TicketController extends Controller
@@ -33,7 +31,7 @@ class TicketController extends Controller
      */
     public function create(Order $order)
     {
-        $this->authorize('create', $order);
+        $this->authorize('create', [Ticket::class, $order]);
         return view('order.ticket.create', [
             'order' => $order
         ]);
@@ -48,7 +46,7 @@ class TicketController extends Controller
     public function store(Order $order, Request $request)
     {
 
-        $this->authorize('create', $order);
+        $this->authorize('create', [Ticket::class, $order]);
         $this->validateTicket();
         $ticket = new Ticket();
         $ticket->uspNumber = $request->input('uspNumber');
@@ -111,6 +109,28 @@ class TicketController extends Controller
     public function update(Request $request, Ticket $ticket)
     {
         $this->authorize('update', $ticket);
+        $this->validateTicket();
+        $ticket->uspNumber = $request->input('uspNumber');
+        $ticket->passangerFullName = $request->input('passangerFullName');
+        $ticket->incomingFromAirportCode = strtoupper($request->input('incomingFromAirportCode'));
+        $ticket->incomingToAirportCode = strtoupper($request->input('incomingToAirportCode'));
+        $ticket->departDate = $request->input('departDate');
+        $ticket->outcomingFromAirportCode = strtoupper($request->input('outcomingFromAirportCode'));
+        $ticket->outcomingToAirportCode = strtoupper($request->input('outcomingToAirportCode'));
+        $ticket->returnDate = $request->input('returnDate');
+        $ticket->international = $request->input('international') ? True : False;
+        if($request->input('international')) {
+            if($request->file('passport')){
+               Storage::delete([$ticket->passport]);
+               $fileName = time().'_'.$request->file('passport')->getClientOriginalName();
+               $ticket->passport = $request->file('passport')->storeAs('passports', $fileName);
+            }else {
+                return redirect()->back()->withInput()->withErrors('Não foi possível encontrar o arquivo');
+            }
+        }
+        $ticket->save();
+        return redirect()->route('order.show', ['order' => $ticket->order]);
+
     }
 
     /**

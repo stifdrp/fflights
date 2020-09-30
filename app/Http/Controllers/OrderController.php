@@ -55,7 +55,8 @@ class OrderController extends Controller
             'budget' => 'required|exists:budgets,id'
             ]);
         $order = new Order();
-        $order->user_id = Auth::user()->id;
+        $order->user()->associate(Auth::user());
+        // $order->user_id = Auth::user()->id;
         $order->description = $request->input('description');
         $order->budget_id = $request->input('budget');
         $order->save();

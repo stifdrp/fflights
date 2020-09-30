@@ -27,6 +27,7 @@
                     <th>Verba</th>
                     <th>Estatus</th>
                     <th>Data da solicitação</td>
+                    <th>Ações</td>
                 </tr>
 
                 @foreach ($orders as $order)
@@ -46,6 +47,10 @@
                     </td>
                     <td>
                         {{ date('d/m/Y', strtotime($order->created_at)) }}
+                    </td>
+                    <td>
+                        <i class="fas fa-edit"></i>
+                        <i class="fas fa-times"></i>
                     </td>
                 </tr>
                 @endforeach

@@ -17,7 +17,7 @@
 <div class="box justify-content-center container-sm">
     <div class="box box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title">Fazer Solicitação</h3>
+            <h3 class="box-title">Solicitação</h3>
         </div>
         <!-- /.box-header -->
         <!-- form start -->

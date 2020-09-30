@@ -29,7 +29,7 @@
 
 <div class="box-footer">
     <button type="submit" class="btn btn-primary">
-        @empty($budget)
+        @empty($order)
             Solicitar
         @else
             Atualizar

@@ -30,12 +30,12 @@ return [
     'login_url' => config('app.url') . '/login',
     'menu' => [
         [
-            'text' => '<i class="fas fa-home"></i> Solicitar Passagens',
+            'text' => '<i class="fas fa-plane"></i> Solicitar Passagens',
             'url' => config('app.url') . '/solicitation/create',
             'can' => 'authenticated',
         ],
         [
-            'text' => '<i class="fas fa-home"></i> Minhas Solicitações',
+            'text' => '<i class="far fa-copy"></i> Minhas Solicitações',
             'url' => config('app.url') . '/solicitations/my',
             'can' => 'authenticated',
         ],
@@ -47,7 +47,7 @@ return [
     ],
     'right_menu' => [
         [
-            'text' => '<i class="fas fa-cog"></i>',
+            'text' => '<i class="fas fa-user-cog"></i>',
             'title' => 'Configurações',
             'url' => config('app.url') . '/admin/users',
             'can' => 'admin',

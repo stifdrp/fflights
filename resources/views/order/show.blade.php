@@ -18,7 +18,7 @@
     <div class="box-header with-border d-flex justify-content-between">
         <h3 class="box-title">Solicitar Passagens</h3>
         @isset($order)
-            @if($order->status == 'E')
+            @if($order->inElaboration())
                 <div class="box-tools">
                     <form
                         action="{{ route('order.destroy', ['order' => $order ])}}"
@@ -76,7 +76,7 @@
     <div class="box-footer">
         <div class="row justify-content-between no-gutters">
             @isset($order)
-                @if($order->status == 'E')
+                @if($order->inElaboration())
                     <div class="col-auto mr-auto mx-auto">
                         <a href="{{ route('ticket.create', ['order' => $order ]) }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">+ passagem</a>
                     </div>

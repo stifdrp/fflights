@@ -40,5 +40,10 @@ class Order extends Model
         return route('order.show', $this);
     }
 
-
+    public function inElaboration()
+    {
+        if($this->status == 'E')
+            return true;
+        return false;
+    }
 }

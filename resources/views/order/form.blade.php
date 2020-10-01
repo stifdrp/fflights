@@ -1,6 +1,6 @@
 <fieldset
     @isset($order)
-        @if($order->status != 'E')
+        @if($order->inElaboration())
             disabled
         @endif
     @endisset
@@ -37,7 +37,7 @@
     <div class="box-footer">
         <div class="row justify-content-between no-gutters">
             @isset($order)
-                @if($order->status == 'E')
+                @if($order->inElaboration())
                     <div class="col-auto mr-auto mx-auto">
                         <button type="submit" class="btn btn-primary btn-lg">
                             @empty($order)

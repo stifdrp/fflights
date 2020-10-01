@@ -18,7 +18,7 @@
     <div class="box-header with-border d-flex justify-content-between">
         <h3 class="box-title">{{$ticket->order->description}}</h3>
         @isset($ticket)
-            @if($ticket->order->status == 'E')
+            @if($ticket->order->inElaboration())
             <div class="box-tools">
                 <form
                     class="d-inline"

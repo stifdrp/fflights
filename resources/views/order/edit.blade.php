@@ -17,7 +17,7 @@
 <div class="box justify-content-center container-sm">
     <div class="box-header with-border d-flex justify-content-between">
         <h3 class="box-title">Editar Solicitação</h3>
-        @if($order->status == 'E')
+        @if($order->inElaboration())
             <div class="box-tools">
                 <form
                     action="{{ route('order.destroy', ['order' => $order ])}}"

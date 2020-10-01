@@ -15,7 +15,7 @@ class Order extends Model
         'F' => 'Finalizado'
     ];
 
-    public function getStatusAttribute()
+    public function getStatusNameAttribute()
     {
         return self::STATUS[ $this->attributes['status'] ];
     }
@@ -34,4 +34,11 @@ class Order extends Model
     {
         return $this->hasMany('App\Ticket');
     }
+
+    public function path()
+    {
+        return route('order.show', $this);
+    }
+
+
 }

@@ -6,6 +6,7 @@ use App\Budget;
 use App\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class OrderController extends Controller
 {
@@ -19,13 +20,25 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $filter = array();
-        $filter[] = 'F';
-        $orders = Order::whereNotIn('status', [ $filter ])->with('user')->with('budget')->paginate(8);
-        return view('order.list', [
-            'orders' => $orders
+        $status = Order::STATUS;
+
+        // Validar se os filtros constam na constante status de order
+        $validate = $request->validate([
+            'filter.*' => [ Rule::in(array_keys($status)) ]
+        ]);
+
+        if ($request->missing('filter')) {
+            $filter[] = 'C';
+        } else {
+            $filter = $request->input('filter');
+        }
+        $orders = Order::whereIn('status', $filter )->with('user')->with('budget')->paginate(8);
+         return view('order.list', [
+            'orders' => $orders,
+            'status' => $status,
+            'filter' => $filter
         ]);
     }
 
@@ -50,13 +63,9 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'description' => 'required',
-            'budget' => 'required|exists:budgets,id'
-            ]);
+        $this->validateOrder();
         $order = new Order();
         $order->user()->associate(Auth::user());
-        // $order->user_id = Auth::user()->id;
         $order->description = $request->input('description');
         $order->budget_id = $request->input('budget');
         $order->save();
@@ -71,6 +80,8 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
+        // dd($order);
+        $this->authorize('view', $order);
         $order->budget;
         $order->tickets;
         return view('order.show', [
@@ -86,6 +97,7 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
+        $this->authorize('update', $order);
         $budgets = Budget::all();
         return view('order.edit', [
             'budgets' => $budgets,
@@ -102,7 +114,13 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+        $this->authorize('update', $order);
+        $this->validateOrder();
+        $order->description = $request->input('description');
+        $order->budget_id = $request->input('budget');
+        $order->save();
+        return redirect($order->path());
+
     }
 
     /**
@@ -113,7 +131,9 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+        $this->authorize('delete', $order);
+        $order->delete();
+        return redirect()->route('orders.my');
     }
 
     public function mySolicitations()
@@ -128,4 +148,19 @@ class OrderController extends Controller
         ]);
     }
 
+    protected function validateOrder()
+    {
+        return request()->validate([
+            'description' => 'required',
+            'budget' => 'required|exists:budgets,id'
+        ]);
+    }
+
+    public function toFinancer(Order $order)
+    {
+        $this->authorize('update', $order);
+        $order->status = 'C';
+        $order->save();
+        return redirect()->route('orders.my');
+    }
 }

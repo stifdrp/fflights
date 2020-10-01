@@ -18,6 +18,22 @@
             </div>
           </div>
     </div>
+    @isset($status)
+    <div class="row justify-content-md-center py-3 px-lg-5 ">
+        <form action="{{ route('order.list')}}" method="get">
+            @foreach($status as $key => $value)
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="filter[]" value="{{$key}}"
+                @if (in_array($key, $filter))
+                    checked
+                @endif>
+                <label class="form-check-label" for="inlineCheckbox1">{{$value}}</label>
+            </div>
+            @endforeach
+            <button type="submit" class="btn btn-secondary btn-sm">Filtrar</button>
+        </form>
+    </div>
+    @endisset
     <div class="box-body table-responsive no-padding">
         <table class="table table-hover">
             <tbody>
@@ -43,14 +59,23 @@
                         {{$order->budget->title}}
                     </td>
                     <td>
-                        {{$order->status}}
+                        {{$order->statusName}}
                     </td>
                     <td>
                         {{ date('d/m/Y', strtotime($order->created_at)) }}
                     </td>
                     <td>
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-times"></i>
+                        <a href="{{ route('order.edit', ['order' => $order]) }}"><i class="fas fa-edit"></i></a>
+                        <form
+                            class="d-inline"
+                            action="{{ route('order.destroy', ['order' => $order ])}}"
+                            method="POST"
+                            onsubmit="return confirm('Tem certeza que deseja excluir?')"
+                        >
+                            @method('DELETE')
+                            @csrf
+                            <button type="submit" style="background: none; padding: 0px; border: none; text-decoration: none"><i class="fas fa-times"></i></button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach

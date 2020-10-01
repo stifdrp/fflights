@@ -3,11 +3,10 @@
 namespace App\Policies;
 
 use App\Order;
-use App\Ticket;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class TicketPolicy
+class OrderPolicy
 {
     use HandlesAuthorization;
 
@@ -26,12 +25,12 @@ class TicketPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Ticket  $ticket
+     * @param  \App\Order  $order
      * @return mixed
      */
-    public function view(User $user, Ticket $ticket)
+    public function view(User $user, Order $order)
     {
-        //
+        return ($order->user->is($user) || $user->can('financer'));
     }
 
     /**
@@ -40,46 +39,44 @@ class TicketPolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function create(User $user, Order $order)
+    public function create(User $user)
     {
-        return $order->user->is($user);
+        //
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Ticket  $ticket
+     * @param  \App\Order  $order
      * @return mixed
      */
-    public function update(User $user, Ticket $ticket)
+    public function update(User $user, Order $order)
     {
-        if (($ticket->order->user->is($user)) && $ticket->order->status == 'E')
-            return true;
+        return $order->user->is($user);
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Ticket  $ticket
+     * @param  \App\Order  $order
      * @return mixed
      */
-    public function delete(User $user, Ticket $ticket)
+    public function delete(User $user, Order $order)
     {
-        $ticket->order;
-        if ($ticket->order->user->is($user) || $ticket->order->status == 'E')
-        return true;
+        if ($order->user->is($user) || $order->status == 'C')
+            return true;
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Ticket  $ticket
+     * @param  \App\Order  $order
      * @return mixed
      */
-    public function restore(User $user, Ticket $ticket)
+    public function restore(User $user, Order $order)
     {
         //
     }
@@ -88,17 +85,11 @@ class TicketPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Ticket  $ticket
+     * @param  \App\Order  $order
      * @return mixed
      */
-    public function forceDelete(User $user, Ticket $ticket)
+    public function forceDelete(User $user, Order $order)
     {
         //
-    }
-
-
-    public function userOrFinancer(User $user, Ticket $ticket)
-    {
-        return ($ticket->order->user->is($user) || $user->can('financer'));
     }
 }

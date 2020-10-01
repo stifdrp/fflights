@@ -15,18 +15,29 @@
 @endif
 
 <div class="box justify-content-center container-sm">
-    <div class="box box-primary">
-        <div class="box-header with-border">
-            <h3 class="box-title">Editar Solicitação</h3>
-        </div>
-        <!-- /.box-header -->
-        <!-- form start -->
-        <form role="form" action="{{ route('order.update', ['id' => $order->id ] ) }}" method="POST">
-            @method('PUT')
-            @csrf
-            @include('order.form')
-        </form>
+    <div class="box-header with-border d-flex justify-content-between">
+        <h3 class="box-title">Editar Solicitação</h3>
+        @if($order->status == 'E')
+            <div class="box-tools">
+                <form
+                    action="{{ route('order.destroy', ['order' => $order ])}}"
+                    method="POST"
+                    onsubmit="return confirm('Tem certeza que deseja excluir?')"
+                    >
+                    @method('DELETE')
+                    @csrf
+                    <button type="submit" class="btn btn-danger">Apagar</button>
+                </form>
+            </div>
+        @endif
     </div>
+    <!-- /.box-header -->
+    <!-- form start -->
+    <form role="form" action="{{ route('order.update', ['order' => $order ] ) }}" method="POST">
+        @method('PUT')
+        @csrf
+        @include('order.form')
+    </form>
 </div>
 
 </div>

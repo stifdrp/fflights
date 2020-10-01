@@ -5,12 +5,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/home', 'HomeController@index')->name('home');
 #Rotas para os tickets
-Route::get('/solicitation/{order}/tickets/create', 'TicketController@create')->name('ticket.create');
-Route::post('/solicitation/{order}/tickets/store', 'TicketController@store')->name('ticket.store');
+Route::get('/solicitation/{order}/tickets', 'TicketController@create')->name('ticket.create');
+Route::post('/solicitation/{order}/tickets', 'TicketController@store')->name('ticket.store');
 Route::get('/solicitation/ticket/{ticket}/edit', 'TicketController@edit')->name('ticket.edit');
-Route::put('/solicitation/ticket/{ticket}/edit', 'TicketController@update')->name('ticket.update');
+Route::put('/solicitation/ticket/{ticket}', 'TicketController@update')->name('ticket.update');
+Route::delete('/solicitation/ticket/{ticket}', 'TicketController@destroy')->name('ticket.destroy');
 Route::get('/solicitation/ticket/{ticket}/passport', 'TicketController@passportDownload')->name('ticket.passport.download');
 
+##Processar Solicitações
+Route::get('/solicitation/{order}/tofinancer', 'OrderController@toFinancer')->name('order.financer');
 
 ##Solicitações
 Route::get('/solicitation/create', 'OrderController@create')->name('order');
@@ -18,8 +21,11 @@ Route::post('/solicitation', 'OrderController@store')->name('order.store');
 Route::get('/solicitation/{order}/edit', 'OrderController@edit')->name('order.edit');
 Route::put('/solicitation/{order}', 'OrderController@update')->name('order.update');
 Route::get('/solicitation/{order}', 'OrderController@show')->name('order.show');
+Route::delete('/solicitation/{order}', 'OrderController@destroy')->name('order.destroy');
 
-Route::get('/solicitations', 'OrderController@index');
+
+
+Route::get('/solicitations', 'OrderController@index')->name('order.list');
 Route::get('/solicitations/my', 'OrderController@mySolicitations')->name('orders.my');
 
 

@@ -15,55 +15,83 @@
 @endif
 
 <div class="box justify-content-center container-sm">
-    <div class="box box-primary">
-        <div class="box-header with-border">
-            <h3 class="box-title">Solicitar Passagens</h3>
-        </div>
-
-        <fieldset disabled>
-            <div class="box-body">
-                <div class="form-group">
-                    <label for="description">Descrição</label>
-                    <input type="text" class="form-control"
-                    id="descripton" name="description" value="{{ $order->description }}">
+    <div class="box-header with-border d-flex justify-content-between">
+        <h3 class="box-title">Solicitar Passagens</h3>
+        @isset($order)
+            @if($order->status == 'E')
+                <div class="box-tools">
+                    <form
+                        action="{{ route('order.destroy', ['order' => $order ])}}"
+                        method="POST"
+                        onsubmit="return confirm('Tem certeza que deseja excluir?')"
+                    >
+                        @method('DELETE')
+                        @csrf
+                        <button type="submit" class="btn btn-danger">Apagar</button>
+                    </form>
                 </div>
+            @endif
+        @endisset
+    </div>
 
-                <div class="row justify-content-between no-gutters">
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            <label>Verba</label>
-                            <select class="form-control" name="budget">
-                                <option value="{{$order->budget->id}}"  selected="selected">{{$order->budget->title}}</option>
-                            </select>
-                        </div>
+    <fieldset disabled>
+        <div class="box-body">
+            <div class="form-group">
+                <label for="description">Descrição</label>
+                <input type="text" class="form-control"
+                id="descripton" name="description" value="{{ $order->description }}">
+            </div>
+
+            <div class="row justify-content-between no-gutters">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label>Verba</label>
+                        <select class="form-control" name="budget">
+                            <option value="{{$order->budget->id}}"  selected="selected">{{$order->budget->title}}</option>
+                        </select>
                     </div>
-                    <div class="col-sm-5 ">
-                        <div class="form-group">
-                            <label for="status">Status</label>
-                            <input type="text" class="form-control"
-                                id="status" name="status" value="{{ $order->status }}">
-                        </div>
+                </div>
+                <div class="col-sm-5 ">
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <input type="text" class="form-control"
+                            id="status" name="status" value="{{ $order->statusName }}">
                     </div>
                 </div>
             </div>
-            <!-- /.box-body -->
-        </fieldset>
-
-        @if (count($order->tickets) > 0 )
-            Passagens:
-            <ul>
-            @foreach ($order->tickets as $ticket )
-                <li><a href="{{ route('ticket.edit', ['ticket' => $ticket ]) }}"> {{$ticket->passangerFullName}}</a></li>
-            @endforeach
-            </ul>
-        @endif
-
-        <hr/>
-        <div class="box-footer">
-            <a href="{{ route('ticket.create', ['order' => $order ]) }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Adicionar passagem</a>
         </div>
+        <!-- /.box-body -->
+    </fieldset>
 
+    @if (count($order->tickets) > 0 )
+        Passagens:
+        <ul>
+        @foreach ($order->tickets as $ticket )
+            <li><a href="{{ route('ticket.edit', ['ticket' => $ticket ]) }}"> {{$ticket->passangerFullName}}</a></li>
+        @endforeach
+        </ul>
+    @endif
+
+    <hr/>
+    <div class="box-footer">
+        <div class="row justify-content-between no-gutters">
+            @isset($order)
+                @if($order->status == 'E')
+                    <div class="col-auto mr-auto mx-auto">
+                        <a href="{{ route('ticket.create', ['order' => $order ]) }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">+ passagem</a>
+                    </div>
+                    <div class="col-auto mr-auto mx-auto">
+                        <a href="{{ route('order.financer', [ 'order' => $order]) }}" class="btn btn-success btn-lg w-auto" role="button">Enviar</a>
+                    </div>
+                @endif
+            @endisset
+            <div class="col-auto mr-auto mx-auto">
+                <a href="{{ route('orders.my') }}" class="btn btn-info btn-lg" role="button">Voltar</a>
+            </div>
+        </div>
     </div>
+
+
 
 </div>
 

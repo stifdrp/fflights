@@ -141,7 +141,10 @@ class TicketController extends Controller
      */
     public function destroy(Ticket $ticket)
     {
-        //
+        $this->authorize('delete', $ticket);
+        Storage::delete($ticket->passport);
+        $ticket->delete();
+        return redirect()->route('order.show', $ticket->order);
     }
 
     public function passportDownload(Ticket $ticket)

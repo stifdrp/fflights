@@ -1,5 +1,11 @@
 <div class="box-body justify-content-center">
-    <fieldset>
+    <fieldset
+        @isset($ticket)
+            @if($ticket->order->status != 'E')
+                disabled
+            @endif
+        @endisset
+    >
         <legend>Passagem</legend>
         <div class="form-row">
             <div class="form-group col-3">
@@ -174,21 +180,39 @@
 
         </fieldset>
         @endcan
-
-
     </fieldset>
 
 </div>
 <!-- /.box-body -->
 
 <div class="box-footer">
-    <button type="submit" class="btn btn-primary">
-        @empty($ticket)
-            Adicionar
-        @else
-            Atualizar
-        @endempty
-    </button>
+    <div class="row justify-content-between no-gutters">
+        @isset($order)
+            @if($order->status == 'E')
+                <div class="col-auto mr-auto mx-auto">
+                    <button type="submit" class="btn btn-primary btn-block">
+                            Adicionar
+                    </button>
+                </div>
+            @endif
+            <div class="col-auto mr-auto mx-auto">
+                <a class="btn btn-info btn-close" href="{{ route('order.show', ['order' => $order]) }}">Voltar</a>
+            </div>
+        @endisset
+
+        @isset($ticket)
+            @if($ticket->order->status == 'E')
+                <div class="col-auto mr-auto mx-auto">
+                    <button type="submit" class="btn btn-primary btn-block">
+                            Atualizar
+                    </button>
+                </div>
+            @endif
+            <div class="col-auto mr-auto mx-auto">
+                <a class="btn btn-info btn-close" href="{{ route('order.show', ['order' => $ticket->order]) }}">Voltar</a>
+            </div>
+        @endisset
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>

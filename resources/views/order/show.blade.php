@@ -67,7 +67,13 @@
         Passagens:
         <ul>
         @foreach ($order->tickets as $ticket )
-            <li><a href="{{ route('ticket.edit', ['ticket' => $ticket ]) }}"> {{$ticket->passangerFullName}}</a></li>
+            <li><a href="
+                    @if ($order->inElaboration())
+                        {{route('ticket.edit', ['ticket' => $ticket ])}}
+                    @elseif ($order->forQuote())
+                        {{route('ticket.quote', ['ticket' => $ticket ])}}
+                    @endif
+                "> {{$ticket->passangerFullName}}</a></li>
         @endforeach
         </ul>
     @endif
@@ -84,6 +90,18 @@
                         <a href="{{ route('order.financer', [ 'order' => $order]) }}" class="btn btn-success btn-lg w-auto" role="button">Enviar</a>
                     </div>
                 @endif
+                @can('financer')
+                    @if($order->forQuote())
+                        <div class="col-auto mr-auto mx-auto">
+                            <a href="{{ route('ticket.create', ['order' => $order ]) }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Cotar</a>
+                        </div>
+                    @endif
+                    @if($order->inProgress())
+                    <div class="col-auto mr-auto mx-auto">
+                        <a href="{{ route('ticket.create', ['order' => $order ]) }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Emitir</a>
+                    </div>
+                @endif
+                @endcan
             @endisset
             <div class="col-auto mr-auto mx-auto">
                 <a href="{{ route('orders.my') }}" class="btn btn-info btn-lg" role="button">Voltar</a>

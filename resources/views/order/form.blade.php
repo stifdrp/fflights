@@ -31,7 +31,7 @@
             @endforeach
             </select>
         </div>
-
+    </div>
     <!-- /.box-body -->
 
     <div class="box-footer">
@@ -40,14 +40,16 @@
                 @if($order->inElaboration())
                     <div class="col-auto mr-auto mx-auto">
                         <button type="submit" class="btn btn-primary btn-lg">
-                            @empty($order)
-                                Solicitar
-                            @else
                                 Atualizar
-                            @endempty
                         </button>
                     </div>
                 @endif
+            @else
+                <div class="col-auto mr-auto mx-auto">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                            Solicitar
+                    </button>
+                </div>
             @endisset
             <div class="col-auto mr-auto mx-auto">
                 <a href="{{ route('orders.my') }}" class="btn btn-info btn-lg" role="button">Voltar</a>

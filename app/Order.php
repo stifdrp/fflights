@@ -42,7 +42,22 @@ class Order extends Model
 
     public function inElaboration()
     {
-        if($this->status == 'E')
+        return $this->verifyStatus('E');
+    }
+
+    public function forQuote()
+    {
+        return $this->verifyStatus('C');
+    }
+
+    public function inProgress()
+    {
+        return $this->verifyStatus('A');
+    }
+
+    protected function verifyStatus($status)
+    {
+        if($this->status == $status)
             return true;
         return false;
     }

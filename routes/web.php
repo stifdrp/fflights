@@ -7,6 +7,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 #Rotas para os tickets
 Route::get('/solicitation/{order}/tickets', 'TicketController@create')->name('ticket.create');
 Route::post('/solicitation/{order}/tickets', 'TicketController@store')->name('ticket.store');
+Route::get('/solicitation/ticket/{ticket}/quote', 'Financer\TicketQuoteController@quote')->name('ticket.quote');
+Route::put('/solicitation/ticket/{ticket}/quote', 'Financer\TicketQuoteController@quoteStore')->name('ticket.quote.store');
 Route::get('/solicitation/ticket/{ticket}/edit', 'TicketController@edit')->name('ticket.edit');
 Route::put('/solicitation/ticket/{ticket}', 'TicketController@update')->name('ticket.update');
 Route::delete('/solicitation/ticket/{ticket}', 'TicketController@destroy')->name('ticket.destroy');

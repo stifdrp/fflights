@@ -101,4 +101,5 @@ class TicketPolicy
     {
         return ($ticket->order->user->is($user) || $user->can('financer'));
     }
+
 }

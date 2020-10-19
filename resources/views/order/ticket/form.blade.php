@@ -22,7 +22,7 @@
 
 
         <fieldset>
-            <legend><h6>Dados para Chegada</h6></legend>
+            <legend><h6>Dados para Ida</h6></legend>
             <div class="form-row">
                 <div class="form-group col">
                     <label for="incomingFromAirportCode">Aeroporto de saída</label>

@@ -70,7 +70,7 @@
             <li><a href="
                     @if ($order->inElaboration())
                         {{route('ticket.edit', ['ticket' => $ticket ])}}
-                    @elseif ($order->forQuote())
+                    @elseif ($order->inProgress())
                         {{route('ticket.quote', ['ticket' => $ticket ])}}
                     @endif
                 "> {{$ticket->passangerFullName}}</a></li>

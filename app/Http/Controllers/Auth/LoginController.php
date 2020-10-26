@@ -23,12 +23,12 @@ class LoginController extends Controller
     {
         //Login temporario de usuario teste
 
-            $user = User::find('5542290'); //usuario financeiro e admin
-            // $user = User::find('59020429'); //usuario financeiro apenas
-            // $user = User::find('9206585'); //usuario apenas
+            // $user = User::find('5542290'); //usuario financeiro e admin
+            // // $user = User::find('59020429'); //usuario financeiro apenas
+            // // $user = User::find('9206585'); //usuario apenas
 
-            Auth::login($user, true);
-            return redirect()->route('home');
+            // Auth::login($user, true);
+            // return redirect()->route('home');
 
 
         // Procedimento correto

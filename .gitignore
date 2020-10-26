@@ -18,3 +18,4 @@ yarn-error.log
 
 /.vagrant
 .phpunit.result.cache
+/public/deploy

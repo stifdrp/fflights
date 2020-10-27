@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use App\Traits\Excludable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -41,11 +41,11 @@ class User extends Authenticatable
 
     public function profiles()
     {
-        return $this->belongsToMany('App\Profile');
+        return $this->belongsToMany('App\Models\Profile');
     }
 
     public function orders()
     {
-        return $this->hasMany('App\Order');
+        return $this->hasMany('App\Models\Order');
     }
 }

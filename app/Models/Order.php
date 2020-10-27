@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,17 +22,17 @@ class Order extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\Models\User');
     }
 
     public function budget()
     {
-        return $this->belongsTo('App\Budget');
+        return $this->belongsTo('App\Models\Budget');
     }
 
     public function tickets()
     {
-        return $this->hasMany('App\Ticket');
+        return $this->hasMany('App\Models\Ticket');
     }
 
     public function path()

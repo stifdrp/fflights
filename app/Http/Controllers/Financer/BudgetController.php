@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Financer;
 
-use App\Budget;
+use App\Models\Budget;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 

@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
-use App\Order;
-use App\Ticket;
-use App\User;
+use App\Models\Order;
+use App\Models\Ticket;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TicketPolicy

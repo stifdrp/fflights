@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Budget;
-use App\Order;
+use App\Http\Controllers\Controller;
+
+use App\Models\Budget;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -13,6 +15,7 @@ class OrderController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        // $this->authorizeResource(Order::class, 'order');
     }
 
     /**

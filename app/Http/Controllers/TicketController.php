@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Order;
-use App\Ticket;
+use App\Models\Order;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 

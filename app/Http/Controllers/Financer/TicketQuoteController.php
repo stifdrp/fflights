@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Financer;
 
 use App\Http\Controllers\Controller;
-use App\Ticket;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 
 class TicketQuoteController extends Controller

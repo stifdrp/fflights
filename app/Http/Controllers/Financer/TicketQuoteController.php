@@ -23,7 +23,7 @@ class TicketQuoteController extends Controller
 
     public function quoteStore(Request $request, Ticket $ticket)
     {
-        if(!$ticket->order->forQuote()){
+        if(!$ticket->order->inProgress()){
             return redirect()->route('order.show', ['order' => $ticket->order]);
         }
 

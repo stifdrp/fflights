@@ -39,7 +39,7 @@
 <div class="box-footer mt-3">
     <div class="row justify-content-between no-gutters">
         @isset($ticket)
-            @if($ticket->order->forQuote())
+            @if($ticket->order->inProgress())
                 <div class="col-auto mr-auto mx-auto">
                     <button type="submit" class="btn btn-primary btn-block">
                             Atualizar

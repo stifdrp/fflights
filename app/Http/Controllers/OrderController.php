@@ -161,9 +161,32 @@ class OrderController extends Controller
 
     public function toFinancer(Order $order)
     {
-        $this->authorize('update', $order);
-        $order->status = 'C';
-        $order->save();
+        if($order->inElaboration())
+            $this->changeStatus($order, 'C');
         return redirect()->route('orders.my');
     }
+
+    public function toElaboration(Order $order)
+    {
+        if($order->forQuote())
+            $this->changeStatus($order, 'E');
+        return redirect()->route('orders.my');
+    }
+
+    public function inProgress(Order $order)
+    {
+        if($order->forQuote())
+            $this->changeStatus($order, 'A');
+        return redirect()->route('order.show', ['order' => $order]);
+    }
+
+    protected function changeStatus(Order $order, $status)
+    {
+        $this->authorize('update', $order);
+        $order->status = $status;
+        $order->save();
+        return true;
+    }
+
+    
 }

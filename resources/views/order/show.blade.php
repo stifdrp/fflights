@@ -93,8 +93,12 @@
                 @can('financer')
                     @if($order->forQuote())
                         <div class="col-auto mr-auto mx-auto">
-                            <a href="{{ route('ticket.create', ['order' => $order ]) }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Cotar</a>
+                            <a href="{{ route('order.inProgress', ['order' => $order ]) }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Cotar</a>
                         </div>
+                        <div class="col-auto mr-auto mx-auto">
+                            <a href="{{ route('order.elaboration', ['order' => $order ]) }}" class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Estornar</a>
+                        </div>
+
                     @endif
                     @if($order->inProgress())
                     <div class="col-auto mr-auto mx-auto">

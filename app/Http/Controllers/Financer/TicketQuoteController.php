@@ -15,7 +15,7 @@ class TicketQuoteController extends Controller
 
     public function quote(Ticket $ticket)
     {
-        if(!$ticket->order->forQuote()){
+        if(!$ticket->order->inProgress()){
             return redirect()->route('order.show', ['order' => $ticket->order]);
         }
         return view('order.ticket.quote', ['ticket' => $ticket]);

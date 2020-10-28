@@ -1,9 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrderController;
 
-
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 #Rotas para os tickets
 Route::get('/solicitation/{order}/tickets', 'TicketController@create')->name('ticket.create');
 Route::post('/solicitation/{order}/tickets', 'TicketController@store')->name('ticket.store');
@@ -16,6 +19,8 @@ Route::get('/solicitation/ticket/{ticket}/passport', 'TicketController@passportD
 
 ##Processar Solicitações
 Route::get('/solicitation/{order}/tofinancer', 'OrderController@toFinancer')->name('order.financer');
+Route::get('/solicitation/{order}/toElaboration', [OrderController::class, 'toElaboration'])->name('order.elaboration');
+Route::get('/solicitation/{order}/inProgress', [OrderController::class, 'inProgress'])->name('order.inProgress');
 
 ##Solicitações
 Route::get('/solicitation/create', 'OrderController@create')->name('order');
@@ -45,9 +50,6 @@ Route::prefix('financer')->group( function() {
 });
 
 #Rotas para a senha Única
-Route::get('login', 'Auth\LoginController@redirectToProvider')->name('login');
-Route::get('login/senhaunica/callback', 'Auth\LoginController@handleProviderCallback');
-Route::post('logout', 'Auth\LoginController@logout')->name('logout');
-
-
-
+Route::get('login', [LoginController::class, 'redirectToProvider'])->name('login');
+Route::get('callback', [LoginController::class, 'handleProviderCallback']);
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');

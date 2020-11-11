@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FlightSegment;
 use App\Models\Order;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
@@ -51,12 +52,6 @@ class TicketController extends Controller
         $ticket = new Ticket();
         $ticket->uspNumber = $request->input('uspNumber');
         $ticket->passangerFullName = $request->input('passangerFullName');
-        $ticket->incomingFromAirportCode = strtoupper($request->input('incomingFromAirportCode'));
-        $ticket->incomingToAirportCode = strtoupper($request->input('incomingToAirportCode'));
-        $ticket->departDate = $request->input('departDate');
-        $ticket->outcomingFromAirportCode = strtoupper($request->input('outcomingFromAirportCode'));
-        $ticket->outcomingToAirportCode = strtoupper($request->input('outcomingToAirportCode'));
-        $ticket->returnDate = $request->input('returnDate');
         $ticket->international = $request->input('international') ? True : False;
         if($request->input('international')) {
             if($request->file('passport')){
@@ -68,6 +63,13 @@ class TicketController extends Controller
         }
         $ticket->order()->associate($order);
         $ticket->save();
+        foreach($request->addmore as $segment){
+            $flightSegment = new FlightSegment();
+            $flightSegment->toAirportCode = $segment['toAirportCode'];
+            $flightSegment->fromAirportCode = $segment['fromAirportCode'];
+            $flightSegment->departDate = $segment['departDate'];
+            $ticket->flightSegments()->save($flightSegment);
+        }
         return redirect()
                 ->route('order.show', [ 'order' => $order]);
 
@@ -94,6 +96,7 @@ class TicketController extends Controller
     {
         $this->authorize('userOrFinancer', $ticket);
         $ticket->order;
+        $ticket->flightSegments;
         return view('order.ticket.edit', [
             'ticket' => $ticket
         ]);
@@ -108,16 +111,13 @@ class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket)
     {
+        dd($ticket->flightSegments);
+        dd($request->addmore);
+        dd($ticket->flightSegments->diff($request->addmore));
         $this->authorize('update', $ticket);
         $this->validateTicket();
         $ticket->uspNumber = $request->input('uspNumber');
         $ticket->passangerFullName = $request->input('passangerFullName');
-        $ticket->incomingFromAirportCode = strtoupper($request->input('incomingFromAirportCode'));
-        $ticket->incomingToAirportCode = strtoupper($request->input('incomingToAirportCode'));
-        $ticket->departDate = $request->input('departDate');
-        $ticket->outcomingFromAirportCode = strtoupper($request->input('outcomingFromAirportCode'));
-        $ticket->outcomingToAirportCode = strtoupper($request->input('outcomingToAirportCode'));
-        $ticket->returnDate = $request->input('returnDate');
         $ticket->international = $request->input('international') ? True : False;
         if($request->input('international')) {
             if($request->file('passport')){
@@ -129,6 +129,7 @@ class TicketController extends Controller
             }
         }
         $ticket->save();
+                
         return redirect()->route('order.show', ['order' => $ticket->order]);
 
     }
@@ -158,30 +159,22 @@ class TicketController extends Controller
         return request()->validate([
             'uspNumber'                 => 'nullable|integer',
             'passangerFullName'         => 'required|string|max:150',
-            'incomingFromAirportCode'   => 'required|string|size:3',
-            'incomingToAirportCode'     => 'required|string|size:3',
-            'departDate'                => 'required|date',
-            'outcomingFromAirportCode'  => 'required|string|size:3',
-            'outcomingToAirportCode'    => 'required|string|size:3',
-            'returnDate'                => 'required|date',
+            'addmore.*.fromAirportCode' => 'required|string|size:3',
+            'addmore.*.toAirportCode'   => 'required|string|size:3',
+            'addmore.*.departDate'      => 'required|date',
             'international'             => 'nullable|string',
             'passport'                  => 'required_if:international,==,True|file|mimes:jpeg,jpg,png,pdf|max:2048',
         ],
         [
-            'uspNumber.integer'                 => 'Tem que ser número',
-            'passangerFullName.required'        => 'O nome do passageiro é obrigatório',
-            'incomingFromAirportCode.required'  => 'O código de Aeroporto é obrigatório',
-            'incomingToAirportCode.required'    => 'O código de Aeroporto é obrigatório',
-            'outcomingFromAirportCode.required' => 'O código de Aeroporto é obrigatório',
-            'outcomingToAirportCode.required'   => 'O código de Aeroporto é obrigatório',
-            'incomingFromAirportCode.size'      => 'O código de Aeroporto tem que ter 3 digitos',
-            'incomingToAirportCode.size'        => 'O código de Aeroporto tem que ter 3 digitos',
-            'outcomingFromAirportCode.size'     => 'O código de Aeroporto tem que ter 3 digitos',
-            'outcomingToAirportCode.size'       => 'O código de Aeroporto tem que ter 3 digitos',
-            'departDate.required'               => 'A data de embarque é obrigatória',
-            'returnDate.required'               => 'A data de embarque é obrigatória',
-            'passport.required_if'              => 'Arquivo do passaporte é obrigatório (extensões permitidas pdf, jpg e png',
-            'passport.mimes'                    => 'Arquivo inválido, extensões permitidas: pdf, jpg, png',
+            'uspNumber.integer'                     => 'Tem que ser número',
+            'passangerFullName.required'            => 'O nome do passageiro é obrigatório',
+            'addmore.*.fromAirportCode.required'    => 'O código de Aeroporto é obrigatório',
+            'addmore.*.toAirportCode.required'      => 'O código de Aeroporto é obrigatório',
+            'addmore.*.fromAirportCode.size'        => 'O código de Aeroporto tem que ter 3 digitos',
+            'addmore.*.toAirportCode.size'          => 'O código de Aeroporto tem que ter 3 digitos',
+            'departDate.required'                   => 'A data de embarque é obrigatória',
+            'passport.required_if'                  => 'Arquivo do passaporte é obrigatório (extensões permitidas pdf, jpg e png',
+            'passport.mimes'                        => 'Arquivo inválido, extensões permitidas: pdf, jpg, png',
             ]
         );
     }

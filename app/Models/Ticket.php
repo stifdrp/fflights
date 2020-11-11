@@ -12,4 +12,9 @@ class Ticket extends Model
     {
         return $this->belongsTo('App\Models\Order');
     }
+
+    public function flightSegments()
+    {
+        return $this->hasMany('App\Models\FlightSegment');
+    }
 }

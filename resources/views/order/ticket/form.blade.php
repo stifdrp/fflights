@@ -9,7 +9,7 @@
         <legend>Passagem</legend>
         <div class="form-row">
             <div class="form-group col-3">
-                <label for="uspNumber">Número USP</label>
+                <label for="uspNumber">Número USP do passageiro</label>
                 <input type="number" class="form-control @error('uspNumber') is-invalid @enderror"
                     id="uspNumber"  name="uspNumber" value="{{ $ticket->uspNumber ?? old('uspNumber') }}">
             </div>
@@ -22,91 +22,99 @@
 
 
         <fieldset>
-            <legend><h6>Dados para Ida</h6></legend>
-            <div class="form-row">
-                <div class="form-group col">
-                    <label for="incomingFromAirportCode">Aeroporto de saída</label>
-                    <input type="text"
-                        class="form-control @error('incomingFromAirportCode') is-invalid @enderror"
-                        id="incomingFromAirportCode"
-                        name="incomingFromAirportCode"
-                        value="{{ $ticket->incomingFromAirportCode ?? old('incomingFromAirportCode')  }}"
-                        maxlength="3"
-                        required
-                    >
-                </div>
-                <div class="form-group col">
-                    <label for="incomingToAirportCode">Aeroporto de chegada</label>
-                    <input type="text"
-                        class="form-control @error('incomingToAirportCode') is-invalid @enderror"
-                        id="incomingToAirportCode"
-                        name="incomingToAirportCode"
-                        value="{{ $ticket->incomingToAirportCode ?? old('incomingToAirportCode')  }}"
-                        maxlength="3"
-                        required
-                    >
-                </div>
-
-                <div class="form-group col">
-                    <label for="departDate">Data e hora de embarque</label>
-                    <input type="datetime-local"
-                        class="form-control @error('departDate') is-invalid @enderror"
-                        name="departDate"
-                        max="9999-12-31T23:59"
-                        @isset($ticket->departDate)
-                            value="{{ date('Y-m-d\TH:i:s', strtotime($ticket->departDate)) ?? old('departDate') }}"
-                        @else
-                            value="{{old('departDate') ?? ''}}"
+            <legend>Dados do trecho</legend>
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dynamic_fields">
+                    <thead>
+                        <tr>
+                            <td>Sigla do aeroporto de saída</td>
+                            <td>Sigla do aeroporto de chegada</td>
+                            <td>Data e hora de embarque</td>
+                            <td>Ação</td>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td>
+                            <input type="text"
+                            class="form-control @error('fromAirportCode') is-invalid @enderror"
+                            name="addmore[0][fromAirportCode]"
+                            value="{{ $ticket->flightSegments[0]->fromAirportCode ?? old('addmore[0][fromAirportCode]')  }}"
+                            maxlength="3"
+                            required
+                        >
+                        </td>
+                        <td>
+                            <input type="text"
+                            class="form-control @error('toAirportCode') is-invalid @enderror"
+                            name="addmore[0][toAirportCode]"
+                            value="{{ $ticket->flightSegments[0]->toAirportCode ?? old('toAirportCode')  }}"
+                            maxlength="3"
+                            required
+                        >
+                        </td>
+                        <td>
+                            <input type="datetime-local"
+                            class="form-control @error('departDate') is-invalid @enderror"
+                            name="addmore[0][departDate]"
+                            max="9999-12-31T23:59"
+                            @isset($ticket->flightSegments[0]->departDate)
+                                value="{{ date('Y-m-d\TH:i:s', strtotime($ticket->flightSegments[0]->departDate)) ?? old('departDate') }}"
+                            @else
+                                value="{{old('departDate') ?? ''}}"
+                            @endisset
+                            required
+                        >
+                        </td>
+                        <td>
+                            <button type="button" id="addFlightSegment" class="btn btn-success btn-sm" >+ Trecho</button>
+                        </td>
+                        @isset($ticket)
+                            @if(count($ticket->flightSegments) > 1)
+                                @foreach ($ticket->flightSegments as $key => $segment)
+                                    @if ($key > 0)
+                                        <tr>
+                                            <td>
+                                                <input type="text"
+                                                class="form-control @error('addmore[{{$key}}][fromAirportCode]') is-invalid @enderror"
+                                                name="addmore[{{$key}}][fromAirportCode]"
+                                                value="{{ $ticket->flightSegments[$key]->fromAirportCode ?? old('addmore['.$key.'][fromAirportCode]')  }}"
+                                                maxlength="3"
+                                                required
+                                            >
+                                            </td>
+                                            <td>
+                                                <input type="text"
+                                                class="form-control @error('addmore[{{$key}}][toAirportCode]') is-invalid @enderror"
+                                                name="addmore[{{$key}}][toAirportCode]"
+                                                value="{{ $ticket->flightSegments[$key]->toAirportCode ?? old('toAirportCode')  }}"
+                                                maxlength="3"
+                                                required
+                                            >
+                                            </td>
+                                            <td>
+                                                <input type="datetime-local"
+                                                class="form-control @error('addmore[{{$key}}][departDate]') is-invalid @enderror"
+                                                name="addmore[{{$key}}][departDate]"
+                                                max="9999-12-31T23:59"
+                                                @isset($ticket->flightSegments[$key]->departDate)
+                                                    value="{{ date('Y-m-d\TH:i:s', strtotime($ticket->flightSegments[$key]->departDate)) ?? old('departDate') }}"
+                                                @else
+                                                    value="{{old('departDate') ?? ''}}"
+                                                @endisset
+                                                required
+                                            >
+                                            </td>
+                                            <td>
+                                                <button id="rmFlightSegment" class="btn btn-danger remove-tr btn-sm" >Remover</button>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            @endif
                         @endisset
-                        required
-                    >
-                </div>
+                    </tr>
 
-            </div>
-        </fieldset>
-
-
-        <fieldset>
-            <legend><h6>Dados para Retorno</h6></legend>
-            <div class="form-row">
-                <div class="form-group col">
-                    <label for="outcomingFromAirportCode">Aeroporto de saída</label>
-                    <input type="text"
-                        class="form-control @error('outcomingFromAirportCode') is-invalid @enderror"
-                        id="outcomingFromAirportCode"
-                        name="outcomingFromAirportCode"
-                        value="{{ $ticket->outcomingFromAirportCode ?? old('outcomingFromAirportCode')  }}"
-                        maxlength="3"
-                        required
-                    >
-                </div>
-                <div class="form-group col">
-                    <label for="outcomingToAirportCode">Aeroporto de chegada</label>
-                    <input type="text"
-                        class="form-control @error('outcomingToAirportCode') is-invalid @enderror"
-                        id="outcomingToAirportCode"
-                        name="outcomingToAirportCode"
-                        value="{{ $ticket->outcomingToAirportCode ?? old('outcomingToAirportCode')  }}"
-                        maxlength="3"
-                        required
-                    >
-                </div>
-
-                <div class="form-group col">
-                    <label for="returnDate">Data e hora de embarque</label>
-                    <input type="datetime-local"
-                        class="form-control @error('returnDate') is-invalid @enderror"
-                        name="returnDate"
-                        max="9999-12-31T23:59"
-                        @isset($ticket->departDate)
-                            value="{{ date('Y-m-d\TH:i:s', strtotime($ticket->returnDate)) ?? old('returnDate') }}"
-                        @else
-                            value="{{old('returnDate') ?? ''}}"
-                        @endisset
-                        required
-                    >
-                </div>
-
+                </table>
             </div>
         </fieldset>
 
@@ -175,3 +183,45 @@
         @endisset
     </div>
 </div>
+
+
+<script type="text/javascript">
+    // $(document).ready(function(){      
+    //     document.getElementById("addFlightSegment").addEventListener("click", function(event){
+    //         event.preventDefault()
+    //     });
+    // });
+
+    @isset($ticket)
+        var i = {{count($ticket->flightSegments)}};
+    @else
+        var i = 0; 
+    @endisset
+
+    $("#addFlightSegment").click(function(){
+        ++i;
+        var html = '';
+        html += '<tr>';
+        html += '<td>';
+        html += '<input type="text" class="form-control" ';
+        html += 'name="addmore['+i+'][fromAirportCode]"';
+        html += 'maxlength="3" required>';
+        html += '</td><td>';
+        html += '<input type="text" class="form-control"';
+        html += 'name="addmore['+i+'][toAirportCode]"';
+        html += 'maxlength="3" required>';
+        html += '</td><td>';
+        html += '<input type="datetime-local" class="form-control" ';
+        html += 'name="addmore['+i+'][departDate]" max="9999-12-31T23:59" ';
+        html += 'required >';
+        html += '</td><td>';
+        html += '<button id="rmFlightSegment" class="btn btn-danger remove-tr btn-sm" >Remover</button>';
+        html += '</td></tr>';
+        $("#dynamic_fields").append(html);
+    });
+
+    $(document).on('click', '.remove-tr', function(){  
+        $(this).parents('tr').remove();
+    });  
+
+</script>

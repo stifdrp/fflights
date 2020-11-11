@@ -18,20 +18,26 @@ class CreateTicketsTable extends Migration
             $table->bigInteger('order_id')->unsigned();
             $table->Integer('uspNumber')->unsigned()->nullable();
             $table->string('passangerFullName', 150);
-            $table->string('incomingFromAirportCode', 3);
-            $table->string('incomingToAirportCode', 3);
-            $table->dateTime('departDate');
-            $table->string('outcomingFromAirportCode', 3);
-            $table->string('outcomingToAirportCode', 3);
-            $table->dateTime('returnDate');
             $table->boolean('international');
             $table->string('passport', 250)->nullable();
-            $table->decimal('price',8,2,)->default(0);
-            $table->decimal('boardingTax',6,2,)->default(0);
-            $table->decimal('agencyTax',6,2,)->default(0);
             $table->timestamps();
 
             $table->foreign('order_id')->references('id')->on('orders');
+        });
+
+        Schema::create('flight_segments', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('ticket_id')->unsigned();
+            $table->string('fromAirportCode', 3);
+            $table->string('toAirportCode', 3);
+            $table->dateTime('departDate');
+            $table->decimal('price',8,2,)->default(0);
+            $table->decimal('boardingTax',6,2,)->default(0);
+            $table->decimal('agencyTax',6,2,)->default(0);
+            $table->decimal('discount',6,2,)->default(0);
+            $table->timestamps();
+
+            $table->foreign('ticket_id')->references('id')->on('tickets');
         });
     }
 
@@ -42,6 +48,7 @@ class CreateTicketsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('flight_segments');
         Schema::dropIfExists('tickets');
     }
 }

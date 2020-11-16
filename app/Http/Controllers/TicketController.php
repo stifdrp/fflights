@@ -111,7 +111,7 @@ class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket)
     {
-        dd($ticket->flightSegments);
+        // dd($ticket->flightSegments);
         dd($request->addmore);
         dd($ticket->flightSegments->diff($request->addmore));
         $this->authorize('update', $ticket);

@@ -23,6 +23,42 @@
 
         <fieldset>
             <legend>Dados do trecho</legend>
+
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="fromAirportCode">Sigla do aeroporto de saída</label>
+                    <input type="text"
+                        id="fromAirportCode"
+                        class="form-control"
+                        name="fromAirportCode"
+                        maxlength="3"
+                    >
+                </div>
+                <div class="form-group col">
+                    <label for="toAirportCode">Sigla do aeroporto de chegada</label>
+                    <input type="text"
+                        class="form-control"
+                        id="toAirportCode"
+                        name="toAirportCode"
+                        maxlength="3"
+                    >
+                </div>
+
+                <div class="form-group col">
+                    <label for="departDate">Data e hora de embarque</label>
+                    <input type="datetime-local"
+                        class="form-control"
+                        id="departDate"
+                        name="departDate"
+                        max="9999-12-31T23:59"
+                    >
+                </div>
+                <div class="form-group col-1 align-items-end align-self-end mr-2">
+                    <button type="button" id="addFlightSegment" class="btn btn-success btn" > Adicionar</button>
+                </div>
+
+            </div>
+
             <div class="table-responsive">
                 <table class="table table-bordered" id="dynamic_fields">
                     <thead>
@@ -33,87 +69,54 @@
                             <td>Ação</td>
                         </tr>
                     </thead>
-                    <tr>
-                        <td>
-                            <input type="text"
-                            class="form-control @error('fromAirportCode') is-invalid @enderror"
-                            name="addmore[0][fromAirportCode]"
-                            value="{{ $ticket->flightSegments[0]->fromAirportCode ?? old('addmore[0][fromAirportCode]')  }}"
-                            maxlength="3"
-                            required
-                        >
-                        </td>
-                        <td>
-                            <input type="text"
-                            class="form-control @error('toAirportCode') is-invalid @enderror"
-                            name="addmore[0][toAirportCode]"
-                            value="{{ $ticket->flightSegments[0]->toAirportCode ?? old('toAirportCode')  }}"
-                            maxlength="3"
-                            required
-                        >
-                        </td>
-                        <td>
-                            <input type="datetime-local"
-                            class="form-control @error('departDate') is-invalid @enderror"
-                            name="addmore[0][departDate]"
-                            max="9999-12-31T23:59"
-                            @isset($ticket->flightSegments[0]->departDate)
-                                value="{{ date('Y-m-d\TH:i:s', strtotime($ticket->flightSegments[0]->departDate)) ?? old('departDate') }}"
-                            @else
-                                value="{{old('departDate') ?? ''}}"
-                            @endisset
-                            required
-                        >
-                        </td>
-                        <td>
-                            <button type="button" id="addFlightSegment" class="btn btn-success btn-sm" >+ Trecho</button>
-                        </td>
+                    
                         @isset($ticket)
-                            @if(count($ticket->flightSegments) > 1)
+                            @if(count($ticket->flightSegments) > 0)
                                 @foreach ($ticket->flightSegments as $key => $segment)
-                                    @if ($key > 0)
-                                        <tr>
-                                            <td>
-                                                <input type="text"
-                                                class="form-control @error('addmore[{{$key}}][fromAirportCode]') is-invalid @enderror"
-                                                name="addmore[{{$key}}][fromAirportCode]"
-                                                value="{{ $ticket->flightSegments[$key]->fromAirportCode ?? old('addmore['.$key.'][fromAirportCode]')  }}"
-                                                maxlength="3"
-                                                required
-                                            >
-                                            </td>
-                                            <td>
-                                                <input type="text"
-                                                class="form-control @error('addmore[{{$key}}][toAirportCode]') is-invalid @enderror"
-                                                name="addmore[{{$key}}][toAirportCode]"
-                                                value="{{ $ticket->flightSegments[$key]->toAirportCode ?? old('toAirportCode')  }}"
-                                                maxlength="3"
-                                                required
-                                            >
-                                            </td>
-                                            <td>
-                                                <input type="datetime-local"
-                                                class="form-control @error('addmore[{{$key}}][departDate]') is-invalid @enderror"
-                                                name="addmore[{{$key}}][departDate]"
-                                                max="9999-12-31T23:59"
-                                                @isset($ticket->flightSegments[$key]->departDate)
-                                                    value="{{ date('Y-m-d\TH:i:s', strtotime($ticket->flightSegments[$key]->departDate)) ?? old('departDate') }}"
-                                                @else
-                                                    value="{{old('departDate') ?? ''}}"
-                                                @endisset
-                                                required
-                                            >
-                                            </td>
-                                            <td>
-                                                <button id="rmFlightSegment" class="btn btn-danger remove-tr btn-sm" >Remover</button>
-                                            </td>
-                                        </tr>
-                                    @endif
+                                    <tr>
+                                        <td>
+                                            <input type="text"
+                                            class="form-control @error('addmore[{{$key}}][fromAirportCode]') is-invalid @enderror"
+                                            name="addmore[{{$key}}][fromAirportCode]"
+                                            value="{{ $ticket->flightSegments[$key]->fromAirportCode ?? old('addmore['.$key.'][fromAirportCode]')  }}"
+                                            maxlength="3"
+                                            required
+                                        >
+                                        </td>
+                                        <td>
+                                            <input type="text"
+                                            class="form-control @error('addmore[{{$key}}][toAirportCode]') is-invalid @enderror"
+                                            name="addmore[{{$key}}][toAirportCode]"
+                                            value="{{ $ticket->flightSegments[$key]->toAirportCode ?? old('toAirportCode')  }}"
+                                            maxlength="3"
+                                            required
+                                        >
+                                        </td>
+                                        <td>
+                                            <input type="datetime-local"
+                                            class="form-control @error('addmore[{{$key}}][departDate]') is-invalid @enderror"
+                                            name="addmore[{{$key}}][departDate]"
+                                            max="9999-12-31T23:59"
+                                            @isset($ticket->flightSegments[$key]->departDate)
+                                                value="{{ date('Y-m-d\TH:i:s', strtotime($ticket->flightSegments[$key]->departDate)) ?? old('departDate') }}"
+                                            @else
+                                                value="{{old('departDate') ?? ''}}"
+                                            @endisset
+                                            required
+                                        >
+                                        </td>
+                                        <td>
+                                            @isset($ticket->flightSegments[$key]->id)
+                                                <input name="addmore[{{$key}}][fs_id]" type="hidden" value="{{$ticket->flightSegments[$key]->id}}" />
+                                            @endisset
+                                            
+                                            <button id="rmFlightSegment" class="btn btn-danger remove-tr btn-sm" >Remover</button>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             @endif
                         @endisset
                     </tr>
-
                 </table>
             </div>
         </fieldset>
@@ -201,23 +204,32 @@
     $("#addFlightSegment").click(function(){
         ++i;
         var html = '';
+        var fromAirportCode = document.getElementById('fromAirportCode');
+        var toAirportCode = document.getElementById('toAirportCode');
+        var departDate = document.getElementById('departDate');
         html += '<tr>';
         html += '<td>';
         html += '<input type="text" class="form-control" ';
         html += 'name="addmore['+i+'][fromAirportCode]"';
+        html += 'value="'+ fromAirportCode.value +'"';
         html += 'maxlength="3" required>';
         html += '</td><td>';
         html += '<input type="text" class="form-control"';
         html += 'name="addmore['+i+'][toAirportCode]"';
+        html += 'value="'+ toAirportCode.value +'"';
         html += 'maxlength="3" required>';
         html += '</td><td>';
         html += '<input type="datetime-local" class="form-control" ';
         html += 'name="addmore['+i+'][departDate]" max="9999-12-31T23:59" ';
+        html += 'value="'+ departDate.value +'"';
         html += 'required >';
         html += '</td><td>';
         html += '<button id="rmFlightSegment" class="btn btn-danger remove-tr btn-sm" >Remover</button>';
         html += '</td></tr>';
         $("#dynamic_fields").append(html);
+        fromAirportCode.value = '';
+        toAirportCode.value = '';
+        departDate.value = '';
     });
 
     $(document).on('click', '.remove-tr', function(){  

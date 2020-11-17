@@ -6,6 +6,7 @@ use App\Models\FlightSegment;
 use App\Models\Order;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class TicketController extends Controller
@@ -111,9 +112,39 @@ class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket)
     {
-        // dd($ticket->flightSegments);
-        dd($request->addmore);
-        dd($ticket->flightSegments->diff($request->addmore));
+        // dd($request->addmore);
+        DB::beginTransaction();
+        ###Atualizacao dos Trechos
+        ##Removendo os trechos que existiam e foram apagados
+        if(count($ticket->flightSegments) > 0){
+            if(isset($request->addmore)){
+                $remove = array_diff_key($ticket->flightSegments->toArray(), $request->addmore);
+                foreach ($remove as $item){
+                    $fs = FlightSegment::find($item['id']);
+                    $fs->delete();
+                }
+            } else {
+                $ticket->flightSegments()->delete();
+            }
+        }
+
+        ##Atualizando os trechos que ja existiam e foram modificados
+        $ticket->refresh();
+        // dd($request->addmore);
+        foreach($request->addmore as $item){
+            if(isset($item['id'])){
+                $fs = FlightSegment::find($item['id']);
+            } else {
+                $fs = new FlightSegment();
+                $fs->ticket_id = $ticket->id;
+            }
+            $fs->fromAirportCode = $item['fromAirportCode'];
+            $fs->toAirportCode = $item['toAirportCode'];
+            $fs->departDate = $item['departDate'];
+            $fs->save();
+        }
+
+        $ticket->refresh();
         $this->authorize('update', $ticket);
         $this->validateTicket();
         $ticket->uspNumber = $request->input('uspNumber');
@@ -129,6 +160,7 @@ class TicketController extends Controller
             }
         }
         $ticket->save();
+        DB::commit();
                 
         return redirect()->route('order.show', ['order' => $ticket->order]);
 

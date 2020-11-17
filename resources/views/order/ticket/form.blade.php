@@ -106,10 +106,8 @@
                                         >
                                         </td>
                                         <td>
-                                            @isset($ticket->flightSegments[$key]->id)
-                                                <input name="addmore[{{$key}}][fs_id]" type="hidden" value="{{$ticket->flightSegments[$key]->id}}" />
-                                            @endisset
-                                            
+                                            <input name="addmore[{{$key}}][id]" type="hidden" value="{{$ticket->flightSegments[$key]->id ?? '' }}" />
+                                           
                                             <button id="rmFlightSegment" class="btn btn-danger remove-tr btn-sm" >Remover</button>
                                         </td>
                                     </tr>
@@ -224,6 +222,7 @@
         html += 'value="'+ departDate.value +'"';
         html += 'required >';
         html += '</td><td>';
+        html += '<input name="addmore['+i+'][id]" type="hidden" value="" >';
         html += '<button id="rmFlightSegment" class="btn btn-danger remove-tr btn-sm" >Remover</button>';
         html += '</td></tr>';
         $("#dynamic_fields").append(html);

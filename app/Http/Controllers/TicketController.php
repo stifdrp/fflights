@@ -64,13 +64,15 @@ class TicketController extends Controller
         }
         $ticket->order()->associate($order);
         $ticket->save();
-        foreach($request->addmore as $segment){
-            $flightSegment = new FlightSegment();
-            $flightSegment->toAirportCode = $segment['toAirportCode'];
-            $flightSegment->fromAirportCode = $segment['fromAirportCode'];
-            $flightSegment->departDate = $segment['departDate'];
-            $ticket->flightSegments()->save($flightSegment);
-        }
+        if(isset($request->addmore)){
+            foreach($request->addmore as $segment){
+                $flightSegment = new FlightSegment();
+                $flightSegment->toAirportCode = $segment['toAirportCode'];
+                $flightSegment->fromAirportCode = $segment['fromAirportCode'];
+                $flightSegment->departDate = $segment['departDate'];
+                $ticket->flightSegments()->save($flightSegment);
+            }
+        };
         return redirect()
                 ->route('order.show', [ 'order' => $order]);
 
@@ -95,7 +97,7 @@ class TicketController extends Controller
      */
     public function edit(Ticket $ticket)
     {
-        $this->authorize('userOrFinancer', $ticket);
+        $this->authorize('update', $ticket);
         $ticket->order;
         $ticket->flightSegments;
         return view('order.ticket.edit', [
@@ -112,7 +114,7 @@ class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket)
     {
-        // dd($request->addmore);
+        $this->authorize('update', $ticket);
         DB::beginTransaction();
         ###Atualizacao dos Trechos
         ##Removendo os trechos que existiam e foram apagados

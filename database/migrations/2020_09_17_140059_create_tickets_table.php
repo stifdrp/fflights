@@ -22,7 +22,7 @@ class CreateTicketsTable extends Migration
             $table->string('passport', 250)->nullable();
             $table->timestamps();
 
-            $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
         });
 
         Schema::create('flight_segments', function (Blueprint $table) {
@@ -37,7 +37,7 @@ class CreateTicketsTable extends Migration
             $table->decimal('discount',6,2,)->default(0);
             $table->timestamps();
 
-            $table->foreign('ticket_id')->references('id')->on('tickets');
+            $table->foreign('ticket_id')->references('id')->on('tickets')->onDelete('cascade');
         });
     }
 

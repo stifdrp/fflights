@@ -73,7 +73,7 @@
                         @isset($ticket)
                             @if(count($ticket->flightSegments) > 0)
                                 @foreach ($ticket->flightSegments as $key => $segment)
-                                    <tr>
+                                    <tr id="row{{$key}}">
                                         <td>
                                             <input type="text"
                                             class="form-control @error('addmore[{{$key}}][fromAirportCode]') is-invalid @enderror"
@@ -108,7 +108,7 @@
                                         <td>
                                             <input name="addmore[{{$key}}][id]" type="hidden" value="{{$ticket->flightSegments[$key]->id ?? '' }}" />
                                            
-                                            <button id="rmFlightSegment" class="btn btn-danger remove-tr btn-sm" >Remover</button>
+                                            <button id="{{$key}}" class="btn btn-danger remove-tr btn-sm" >Remover</button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -160,7 +160,7 @@
         @isset($order)
             @if($order->inElaboration())
                 <div class="col-auto mr-auto mx-auto">
-                    <button type="submit" class="btn btn-primary btn-block">
+                    <button id="submit" type="submit" class="btn btn-primary btn-block">
                             Adicionar
                     </button>
                 </div>
@@ -173,7 +173,7 @@
         @isset($ticket)
             @if($ticket->order->inElaboration())
                 <div class="col-auto mr-auto mx-auto">
-                    <button type="submit" class="btn btn-primary btn-block">
+                    <button id="submit" type="submit" class="btn btn-primary btn-block">
                             Atualizar
                     </button>
                 </div>
@@ -192,6 +192,14 @@
     //         event.preventDefault()
     //     });
     // });
+
+    $(document).on("keypress", 'form', function (e) {
+        var code = e.keyCode || e.which;
+        if (code == 13) {
+            e.preventDefault();
+            return false;
+        }
+    });
 
     @isset($ticket)
         var i = {{count($ticket->flightSegments)}};
@@ -223,7 +231,7 @@
         html += 'required >';
         html += '</td><td>';
         html += '<input name="addmore['+i+'][id]" type="hidden" value="" >';
-        html += '<button id="rmFlightSegment" class="btn btn-danger remove-tr btn-sm" >Remover</button>';
+        html += '<button id="'+i+'" class="btn btn-danger remove-tr btn-sm" >Remover</button>';
         html += '</td></tr>';
         $("#dynamic_fields").append(html);
         fromAirportCode.value = '';
@@ -232,7 +240,8 @@
     });
 
     $(document).on('click', '.remove-tr', function(){  
-        $(this).parents('tr').remove();
+        var button_id = $(this).attr("id");
+        $("#row"+button_id+"").remove();
     });  
 
 </script>

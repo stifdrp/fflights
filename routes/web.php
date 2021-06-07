@@ -11,7 +11,9 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/solicitation/{order}/tickets', 'TicketController@create')->name('ticket.create');
 Route::post('/solicitation/{order}/tickets', 'TicketController@store')->name('ticket.store');
 Route::get('/solicitation/ticket/{ticket}/quote', 'Financer\TicketQuoteController@quote')->name('ticket.quote');
-Route::put('/solicitation/ticket/{ticket}/quote', 'Financer\TicketQuoteController@quoteStore')->name('ticket.quote.store');
+Route::get('/solicitation/ticket/{ticket}/quote{flightSegment}', 'Financer\TicketQuoteController@getFlightSegment')->name('ticket.fs');
+
+// Route::put('/solicitation/ticket/{ticket}/quote/{flightSegment}', 'Financer\TicketQuoteController@quoteStore')->name('ticket.quote.store');
 Route::get('/solicitation/ticket/{ticket}/edit', 'TicketController@edit')->name('ticket.edit');
 Route::put('/solicitation/ticket/{ticket}', 'TicketController@update')->name('ticket.update');
 Route::delete('/solicitation/ticket/{ticket}', 'TicketController@destroy')->name('ticket.destroy');

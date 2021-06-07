@@ -12,10 +12,11 @@ jobs:
       uses: actions/checkout@v2
 
     - name: deploy file
-      uses: stifdrp/SFTP-Deploy-Action@v1.2.1
+      uses: stifdrp/SFTP-Docker-Deploy-Action@master
       with:
         server: ${{ secrets.SFTP_SERVER }}
         username: ${{ secrets.SFTP_USER }}
+        sysusername: ${{ secrets.SFTP_SYSUSER }}
         ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
         remote_path: ${{ secrets.REMOTE_PATH_DEV }}
         port: ${{ secrets.SFTP_PORT }}

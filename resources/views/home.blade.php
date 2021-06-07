@@ -3,7 +3,7 @@
 @section('title') FFLights @endsection
 
 @section('content')
-    Teste
+    Teste Agora vai
 @endsection
 
 @section('footer')

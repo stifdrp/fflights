@@ -3,7 +3,7 @@
 @section('title') FFLights @endsection
 
 @section('content')
-    Sera?
+    Sera 2?
 @endsection
 
 @section('footer')

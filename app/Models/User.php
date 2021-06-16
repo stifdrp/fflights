@@ -11,6 +11,7 @@ class User extends Authenticatable
 {
     use Excludable;
     use Notifiable;
+    use \Spatie\Permission\Traits\HasRoles;
 
     /**
      * The attributes that are mass assignable.

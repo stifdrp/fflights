@@ -133,17 +133,19 @@ class TicketController extends Controller
         ##Atualizando os trechos que ja existiam e foram modificados
         $ticket->refresh();
         // dd($request->addmore);
-        foreach($request->addmore as $item){
-            if(isset($item['id'])){
-                $fs = FlightSegment::find($item['id']);
-            } else {
-                $fs = new FlightSegment();
-                $fs->ticket_id = $ticket->id;
+        if (isset($request->addmore)){
+            foreach($request->addmore as $item){
+                if(isset($item['id'])){
+                    $fs = FlightSegment::find($item['id']);
+                } else {
+                    $fs = new FlightSegment();
+                    $fs->ticket_id = $ticket->id;
+                }
+                $fs->fromAirportCode = $item['fromAirportCode'];
+                $fs->toAirportCode = $item['toAirportCode'];
+                $fs->departDate = $item['departDate'];
+                $fs->save();
             }
-            $fs->fromAirportCode = $item['fromAirportCode'];
-            $fs->toAirportCode = $item['toAirportCode'];
-            $fs->departDate = $item['departDate'];
-            $fs->save();
         }
 
         $ticket->refresh();

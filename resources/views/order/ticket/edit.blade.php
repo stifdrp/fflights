@@ -47,3 +47,5 @@
 </div>
 
 @endsection
+
+@include('order.ticket.js')

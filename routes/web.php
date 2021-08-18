@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Financer\TicketQuoteController;
 
 // Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -11,7 +12,8 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/solicitation/{order}/tickets', 'TicketController@create')->name('ticket.create');
 Route::post('/solicitation/{order}/tickets', 'TicketController@store')->name('ticket.store');
 Route::get('/solicitation/ticket/{ticket}/quote', 'Financer\TicketQuoteController@quote')->name('ticket.quote');
-Route::get('/solicitation/ticket/{ticket}/quote{flightSegment}', 'Financer\TicketQuoteController@getFlightSegment')->name('ticket.fs');
+// Route::get('/solicitation/ticket/{ticket}/quote/{flightSegment}', 'Financer\TicketQuoteController@getFlightSegment')->name('ticket.fs');
+Route::post('/solicitation/ticket/{ticket}/quote/{flightSegment}', [TicketQuoteController::class, 'quoteStore'])->name('ticket.fs');
 
 // Route::put('/solicitation/ticket/{ticket}/quote/{flightSegment}', 'Financer\TicketQuoteController@quoteStore')->name('ticket.quote.store');
 Route::get('/solicitation/ticket/{ticket}/edit', 'TicketController@edit')->name('ticket.edit');

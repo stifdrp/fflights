@@ -19,7 +19,7 @@ class TicketQuoteController extends Controller
         if(!$ticket->order->inProgress()){
             return redirect()->route('order.show', ['order' => $ticket->order]);
         }
-        $ticket->flightSegments();
+        $ticket->flightSegments;
         return view('order.ticket.quote', ['ticket' => $ticket]);
     }
 
@@ -55,7 +55,8 @@ class TicketQuoteController extends Controller
         $flightSegment->agencyTax = $agencyTax;
         $flightSegment->discount = $discount;
         $flightSegment->save();
-        return view('order.ticket.quote', ['ticket' => $ticket]);
+        // return view('order.ticket.quote', ['ticket' => $ticket]);
+        return redirect()->back()->with('success', 'Valores atualizados');
     }
 
     protected function toMoney($amount){

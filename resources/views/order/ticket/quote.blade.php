@@ -13,7 +13,7 @@
         </ul>
     </div>
 @endif
-@include('order.ticket.flightSegment')
+
 
 <div class="box justify-content-center container-sm">
     <div class="box-header with-border d-flex justify-content-between">
@@ -53,7 +53,7 @@
                     <h6>Dados do(s) trecho(s)</h6>
                 </div>
                 @foreach ($ticket->flightSegments as $segment)
-                    
+
                     <div class="row align-items-center mb-2">
                         <div class="col">
                             <b>Aeroporto de saída:</b> {{ $segment->fromAirportCode ?? ''}}
@@ -64,11 +64,11 @@
                         <div class="col-1">
                             <b>Data de embarque:</b> {{ date('d/m/Y H:i', strtotime($segment->departDate)) ?? ''}}
                         </div>
-                        {{-- <div class="col-1">
+                        <div class="col-1">
                             <a href="{{route('ticket.fs', ['ticket' => $ticket, 'flightSegment' => $segment])}}">
                                 <i class="fas fa-file-invoice-dollar"></i>
                             </a>
-                        </div> --}}
+                        </div>
                         <div class="col-1">
                             <button id="editFS" type="button" class="btn" data-toggle="modal" data-target="#trecho" data-id="{{ $segment->id }}">
                                 <i class="fas fa-file-invoice-dollar" style="color: red"></i>
@@ -80,17 +80,18 @@
             </fieldset>
         </div>
 
-        {{-- <div class="modal fade" id="trecho" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal fade" id="trecho" tabindex="-1" style="z-index: 1050; display:none" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
               <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="modalLabel">Valores</h5>
+                <div class="modal-header text-write">
+                  <h5 class="modal-title">Valores</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true"><i class="fas fa-times"></i></span>
                   </button>
                 </div>
-                <div class="modal-body">
-                    <form>
+                <form method="POST" action="{{route('ticket.fs', ['ticket' => $ticket, 'flightSegment' => $segment ?? '' ])}}">
+                    <div class="modal-body">
+                        {{ csrf_field() }}
                         <div class="form-row">
                             <div class="form-group col">
                                 <label for="price">Valor da passagem</label>
@@ -99,7 +100,7 @@
                                         <span class="input-group-text">R$</span>
                                     </div>
                                     <input type="text" class="form-control money @error('price') is-invalid @enderror"
-                                        id="price"  name="price" value="{{ $ticket->price ?? old('price') }}">
+                                        id="price"  name="price" value="{{ $segment->price ?? old('price') }}">
                                 </div>
                             </div>
                     
@@ -110,7 +111,7 @@
                                         <span class="input-group-text">R$</span>
                                     </div>
                                     <input type="text" class="form-control money @error('boardingTax') is-invalid @enderror"
-                                        id="boardingTax"  name="boardingTax" value="{{ $ticket->boardingTax ?? old('boardingTax') }}">
+                                        id="boardingTax"  name="boardingTax" value="{{ $segment->boardingTax ?? old('boardingTax') }}">
                                 </div>
                             </div>
                     
@@ -121,7 +122,7 @@
                                         <span class="input-group-text">R$</span>
                                     </div>
                                     <input type="text" class="form-control money @error('agencyTax') is-invalid @enderror"
-                                        id="agencyTax"  name="agencyTax" value="{{ $ticket->agencyTax ?? old('agencyTax') }}">
+                                        id="agencyTax"  name="agencyTax" value="{{ $segment->agencyTax ?? old('agencyTax') }}">
                                 </div>
                             </div>
                     
@@ -132,19 +133,20 @@
                                         <span class="input-group-text">R$</span>
                                     </div>
                                     <input type="text" class="form-control money @error('discount') is-invalid @enderror"
-                                        id="discount"  name="discount" value="{{ $ticket->discount ?? old('discount') }}">
+                                        id="discount"  name="discount" value="{{ $segment->discount ?? old('discount') }}">
                                 </div>
                             </div>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
               </div>
             </div>
-        </div> --}}
+        </div>
 
         <div class="box-footer mt-3">
             <div class="row justify-content-between no-gutters">
@@ -163,37 +165,25 @@
             </div>
         </div>
     
-        <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
 
-        <script>
-            // $(document).on("keypress", 'form', function (e) {
-            //     var code = e.keyCode || e.which;
-            //     if (code == 13) {
-            //         e.preventDefault();
-            //         return false;
-            //     }
-            // });
-            $(document).ready(function () {
-
-                // $.ajaxSetup({
-                //     headers: {
-                //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                //     }
-                // });
-
-                
-                // $('#trecho').on('show.bs.modal', function (event){
-                //     event.preventDefault();
-                //     $.get({{route('ticket.fs', ['ticket' => $ticket, 'flightSegment' => $segment])}}, function(data){
-                //         $('#trecho').html(data.ticket.passangerFullName);
-                    
-                // })
-
-                bsCustomFileInput.init();
-                $('.money').mask('000.000.000.000.000,00', {reverse: true});
-            });
-        </script>
     </div>
 </div>
 @endcan
+@endsection
+@section('javascripts_bottom')
+<script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+
+<script>
+    // $(document).on("keypress", 'form', function (e) {
+    //     var code = e.keyCode || e.which;
+    //     if (code == 13) {
+    //         e.preventDefault();
+    //         return false;
+    //     }
+    // });
+    $(document).ready(function () {
+        bsCustomFileInput.init();
+        $('.money').mask('000.000.000.000.000,00', {reverse: true});
+    });
+</script>
 @endsection

@@ -27,8 +27,7 @@ class TicketQuoteController extends Controller
     {
         if ($ticket->flightSegments->contains($flightSegment)){
             return response()->json([
-                'data' => $flightSegment,
-                'ticket' => $ticket
+                'data' => $flightSegment
             ]);
         }
     }

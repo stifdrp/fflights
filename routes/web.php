@@ -12,7 +12,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/solicitation/{order}/tickets', 'TicketController@create')->name('ticket.create');
 Route::post('/solicitation/{order}/tickets', 'TicketController@store')->name('ticket.store');
 Route::get('/solicitation/ticket/{ticket}/quote', 'Financer\TicketQuoteController@quote')->name('ticket.quote');
-// Route::get('/solicitation/ticket/{ticket}/quote/{flightSegment}', 'Financer\TicketQuoteController@getFlightSegment')->name('ticket.fs');
+Route::get('/solicitation/ticket/{ticket}/quote/{flightSegment}', 'Financer\TicketQuoteController@getFlightSegment')->name('ticket.fs.get');
 Route::post('/solicitation/ticket/{ticket}/quote/{flightSegment}', [TicketQuoteController::class, 'quoteStore'])->name('ticket.fs');
 
 // Route::put('/solicitation/ticket/{ticket}/quote/{flightSegment}', 'Financer\TicketQuoteController@quoteStore')->name('ticket.quote.store');

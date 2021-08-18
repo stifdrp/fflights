@@ -70,7 +70,9 @@
                             </a>
                         </div>
                         <div class="col-1">
-                            <button id="editFS" type="button" class="btn" data-toggle="modal" data-target="#trecho" data-id="{{ $segment->id }}">
+                            <button type="button" class="btn editFS" data-toggle="modal"  
+                                data-attr="{{route('ticket.fs.get', ['ticket' => $ticket, 'flightSegment' => $segment ?? '' ])}}"
+                                data-target="#trecho" data-id="{{ $segment->id }}">
                                 <i class="fas fa-file-invoice-dollar" style="color: red"></i>
                             </button>
                         </div>
@@ -80,6 +82,7 @@
             </fieldset>
         </div>
 
+        
         <div class="modal fade" id="trecho" tabindex="-1" style="z-index: 1050; display:none" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
               <div class="modal-content">
@@ -89,7 +92,7 @@
                     <span aria-hidden="true"><i class="fas fa-times"></i></span>
                   </button>
                 </div>
-                <form method="POST" action="{{route('ticket.fs', ['ticket' => $ticket, 'flightSegment' => $segment ?? '' ])}}">
+                <form id="formQuoteSegment" method="POST" action="">
                     <div class="modal-body">
                         {{ csrf_field() }}
                         <div class="form-row">
@@ -100,7 +103,7 @@
                                         <span class="input-group-text">R$</span>
                                     </div>
                                     <input type="text" class="form-control money @error('price') is-invalid @enderror"
-                                        id="price"  name="price" value="{{ $segment->price ?? old('price') }}">
+                                        id="price"  name="price" value="">
                                 </div>
                             </div>
                     
@@ -111,7 +114,7 @@
                                         <span class="input-group-text">R$</span>
                                     </div>
                                     <input type="text" class="form-control money @error('boardingTax') is-invalid @enderror"
-                                        id="boardingTax"  name="boardingTax" value="{{ $segment->boardingTax ?? old('boardingTax') }}">
+                                        id="boardingTax"  name="boardingTax" value="">
                                 </div>
                             </div>
                     
@@ -122,7 +125,7 @@
                                         <span class="input-group-text">R$</span>
                                     </div>
                                     <input type="text" class="form-control money @error('agencyTax') is-invalid @enderror"
-                                        id="agencyTax"  name="agencyTax" value="{{ $segment->agencyTax ?? old('agencyTax') }}">
+                                        id="agencyTax"  name="agencyTax" value="">
                                 </div>
                             </div>
                     
@@ -133,7 +136,7 @@
                                         <span class="input-group-text">R$</span>
                                     </div>
                                     <input type="text" class="form-control money @error('discount') is-invalid @enderror"
-                                        id="discount"  name="discount" value="{{ $segment->discount ?? old('discount') }}">
+                                        id="discount"  name="discount" value="">
                                 </div>
                             </div>
                         </div>
@@ -182,6 +185,30 @@
     //     }
     // });
     $(document).ready(function () {
+        $('.editFS').click( function() {
+            event.preventDefault();
+            let href = $(this).attr('data-attr');
+            $.ajax({
+                url: href,
+                type:"GET",
+                dataType:"json",
+                // return the result
+                success: function(result) {
+                    $('#price').val(result.data.price.replace(".", ","));
+                    $('#boardingTax').val(result.data.boardingTax.replace(".", ","));
+                    $('#agencyTax').val(result.data.agencyTax.replace(".", ","));
+                    $('#discount').val(result.data.discount.replace(".", ","));
+                    $('#formQuoteSegment').attr('action','/solicitation/ticket/'+ result.data.ticket_id +'/quote/'+ result.data.id );
+                },
+                error: function(jqXHR, testStatus, error) {
+                    console.log(error);
+                    alert("Page " + href + " cannot open. Error:" + error);
+                },
+                timeout: 8000
+            })
+
+
+        });
         bsCustomFileInput.init();
         $('.money').mask('000.000.000.000.000,00', {reverse: true});
     });

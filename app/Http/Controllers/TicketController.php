@@ -70,6 +70,7 @@ class TicketController extends Controller
                 $flightSegment->toAirportCode = $segment['toAirportCode'];
                 $flightSegment->fromAirportCode = $segment['fromAirportCode'];
                 $flightSegment->departDate = $segment['departDate'];
+                $flightSegment->departTime = $segment['departTime'];
                 $ticket->flightSegments()->save($flightSegment);
             }
         };
@@ -144,6 +145,7 @@ class TicketController extends Controller
                 $fs->fromAirportCode = $item['fromAirportCode'];
                 $fs->toAirportCode = $item['toAirportCode'];
                 $fs->departDate = $item['departDate'];
+                $fs->departTime = $item['departTime'];
                 $fs->save();
             }
         }
@@ -198,6 +200,7 @@ class TicketController extends Controller
             'addmore.*.fromAirportCode' => 'required|string|size:3',
             'addmore.*.toAirportCode'   => 'required|string|size:3',
             'addmore.*.departDate'      => 'required|date',
+            'addmore.*.departTime'      => 'required|date_format:H:i',
             'international'             => 'nullable|string',
             'passport'                  => 'required_if:international,==,True|file|mimes:jpeg,jpg,png,pdf|max:2048',
         ],
@@ -209,6 +212,7 @@ class TicketController extends Controller
             'addmore.*.fromAirportCode.size'        => 'O código de Aeroporto tem que ter 3 digitos',
             'addmore.*.toAirportCode.size'          => 'O código de Aeroporto tem que ter 3 digitos',
             'departDate.required'                   => 'A data de embarque é obrigatória',
+            'departTime.required'                   => 'A hora do embarque é obrigatória',
             'passport.required_if'                  => 'Arquivo do passaporte é obrigatório (extensões permitidas pdf, jpg e png',
             'passport.mimes'                        => 'Arquivo inválido, extensões permitidas: pdf, jpg, png',
             ]

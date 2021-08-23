@@ -21,6 +21,7 @@
         var fromAirportCode = document.getElementById('fromAirportCode');
         var toAirportCode = document.getElementById('toAirportCode');
         var departDate = document.getElementById('departDate');
+        var departTime = document.getElementById('departTime');
         html += '<tr id="row'+ i +'">';
         html += '<td>';
         html += '<input type="text" class="form-control" ';
@@ -33,9 +34,14 @@
         html += 'value="'+ toAirportCode.value +'"';
         html += 'maxlength="3" required>';
         html += '</td><td>';
-        html += '<input type="datetime-local" class="form-control" ';
-        html += 'name="addmore['+i+'][departDate]" max="9999-12-31T23:59" ';
+        html += '<input type="date" class="form-control" ';
+        html += 'name="addmore['+i+'][departDate]" max="9999-12-31" ';
         html += 'value="'+ departDate.value +'"';
+        html += 'required >';
+        html += '</td><td>';
+        html += '<input type="time" class="form-control" ';
+        html += 'name="addmore['+i+'][departTime]" max="23:59" ';
+        html += 'value="'+ departTime.value +'"';
         html += 'required >';
         html += '</td><td>';
         html += '<input name="addmore['+i+'][id]" type="hidden" value="" >';
@@ -45,6 +51,7 @@
         fromAirportCode.value = '';
         toAirportCode.value = '';
         departDate.value = '';
+        departTime.value = '';
     });
     
     $(document).on('click', '.remove-tr', function(){  

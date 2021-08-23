@@ -45,12 +45,21 @@
                 </div>
 
                 <div class="form-group col">
-                    <label for="departDate">Data e hora de embarque</label>
-                    <input type="datetime-local"
+                    <label for="departDate">Data de embarque</label>
+                    <input type="date"
                         class="form-control"
                         id="departDate"
                         name="departDate"
-                        max="9999-12-31T23:59"
+                        max="9999-12-31"
+                    >
+                </div>
+                <div class="form-group col">
+                    <label for="departTime">Hora de embarque</label>
+                    <input type="time"
+                        class="form-control"
+                        id="departTime"
+                        name="departTime"
+                        max="23:59"
                     >
                 </div>
                 <div class="form-group col-1 align-items-end align-self-end mr-2">
@@ -65,7 +74,8 @@
                         <tr>
                             <td>Sigla do aeroporto de saída</td>
                             <td>Sigla do aeroporto de chegada</td>
-                            <td>Data e hora de embarque</td>
+                            <td>Data de embarque</td>
+                            <td>Hora de embarque</td>
                             <td>Ação</td>
                         </tr>
                     </thead>
@@ -93,14 +103,27 @@
                                         >
                                         </td>
                                         <td>
-                                            <input type="datetime-local"
+                                            <input type="date"
                                             class="form-control @error('addmore[{{$key}}][departDate]') is-invalid @enderror"
                                             name="addmore[{{$key}}][departDate]"
-                                            max="9999-12-31T23:59"
+                                            max="9999-12-31"
                                             @isset($ticket->flightSegments[$key]->departDate)
-                                                value="{{ date('Y-m-d\TH:i:s', strtotime($ticket->flightSegments[$key]->departDate)) ?? old('departDate') }}"
+                                                value="{{ date('Y-m-d', strtotime($ticket->flightSegments[$key]->departDate)) ?? old('departDate') }}"
                                             @else
                                                 value="{{old('departDate') ?? ''}}"
+                                            @endisset
+                                            required
+                                        >
+                                        </td>
+                                        <td>
+                                            <input type="time"
+                                            class="form-control @error('addmore[{{$key}}][departTime]') is-invalid @enderror"
+                                            name="addmore[{{$key}}][departTime]"
+                                            max="23:59"
+                                            @isset($ticket->flightSegments[$key]->departTime)
+                                                value="{{ date('H:i:s', strtotime($ticket->flightSegments[$key]->departTime)) ?? old('departTime') }}"
+                                            @else
+                                                value="{{old('departTime') ?? ''}}"
                                             @endisset
                                             required
                                         >

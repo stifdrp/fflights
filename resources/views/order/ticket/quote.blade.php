@@ -62,7 +62,10 @@
                             <b>Aeroporto de chegada:</b> {{ $segment->toAirportCode ?? ''}}
                         </div>
                         <div class="col-1">
-                            <b>Data de embarque:</b> {{ date('d/m/Y H:i', strtotime($segment->departDate)) ?? ''}}
+                            <b>Data de embarque:</b> {{ date('d/m/Y', strtotime($segment->departDate)) ?? ''}}
+                        </div>
+                        <div class="col-1">
+                            <b>Hora do embarque:</b> {{ date('H:i', strtotime($segment->departTime)) ?? ''}}
                         </div>
                         <div class="col-1">
                             <a href="{{route('ticket.fs', ['ticket' => $ticket, 'flightSegment' => $segment])}}">

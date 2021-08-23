@@ -30,7 +30,8 @@ class CreateTicketsTable extends Migration
             $table->bigInteger('ticket_id')->unsigned();
             $table->string('fromAirportCode', 3);
             $table->string('toAirportCode', 3);
-            $table->dateTime('departDate');
+            $table->date('departDate');
+            $table->time('departTime');
             $table->decimal('price',8,2,)->default(0);
             $table->decimal('boardingTax',6,2,)->default(0);
             $table->decimal('agencyTax',6,2,)->default(0);

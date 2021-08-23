@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1f3e5f94c93955a80924f6b45837558c",
+    "content-hash": "870982726cee791767db8be9d3cc9e29",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2238,16 +2238,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.51.1",
+            "version": "2.52.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "8619c299d1e0d4b344e1f98ca07a1ce2cfbf1922"
+                "reference": "369c0e2737c56a0f39c946dd261855255a6fccbe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/8619c299d1e0d4b344e1f98ca07a1ce2cfbf1922",
-                "reference": "8619c299d1e0d4b344e1f98ca07a1ce2cfbf1922",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/369c0e2737c56a0f39c946dd261855255a6fccbe",
+                "reference": "369c0e2737c56a0f39c946dd261855255a6fccbe",
                 "shasum": ""
             },
             "require": {
@@ -2328,7 +2328,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-28T13:16:28+00:00"
+            "time": "2021-08-14T19:10:52+00:00"
         },
         {
             "name": "nette/schema",
@@ -5898,16 +5898,16 @@
         },
         {
             "name": "uspdev/senhaunica-socialite",
-            "version": "3.2.0",
+            "version": "4.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/uspdev/senhaunica-socialite.git",
-                "reference": "d87f0c419437441beb0630c8af3519002c4c8feb"
+                "reference": "83a7854e8e30db11e11762cd392b0d6a751ffc7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/uspdev/senhaunica-socialite/zipball/d87f0c419437441beb0630c8af3519002c4c8feb",
-                "reference": "d87f0c419437441beb0630c8af3519002c4c8feb",
+                "url": "https://api.github.com/repos/uspdev/senhaunica-socialite/zipball/83a7854e8e30db11e11762cd392b0d6a751ffc7c",
+                "reference": "83a7854e8e30db11e11762cd392b0d6a751ffc7c",
                 "shasum": ""
             },
             "require": {
@@ -5928,7 +5928,10 @@
             "autoload": {
                 "psr-4": {
                     "Uspdev\\SenhaunicaSocialite\\": "src/"
-                }
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -5945,9 +5948,9 @@
             "homepage": "https://github.com/uspdev/senhaunica-socialite",
             "support": {
                 "issues": "https://github.com/uspdev/senhaunica-socialite/issues",
-                "source": "https://github.com/uspdev/senhaunica-socialite/tree/3.2.0"
+                "source": "https://github.com/uspdev/senhaunica-socialite/tree/4.0.1"
             },
-            "time": "2021-07-22T16:03:45+00:00"
+            "time": "2021-08-16T23:38:19+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
